@@ -33,9 +33,6 @@ Rosquilla Reyes es una aplicación web **SPA (Single Page Application)** desarro
 
 Este proyecto es la versión modernizada del sitio original construido en HTML/CSS/JS vanilla, migrando a un stack actual mantenible y escalable.
 
-> 📁 El sitio original (vanilla) se encuentra en la carpeta raíz `../`  
-> 📁 Esta versión moderna vive en `./moderno/`
-
 ---
 
 ## 🛠 Stack tecnológico
@@ -68,7 +65,7 @@ Este proyecto es la versión modernizada del sitio original construido en HTML/C
 ## 📁 Estructura del proyecto
 
 ```
-moderno/
+Rosquillas Reyes/
 ├── public/
 │   └── img/                    # Imágenes estáticas (productos, etc.)
 ├── src/
@@ -112,16 +109,13 @@ moderno/
 ### Instalación
 
 ```bash
-# 1. Ir a la carpeta del proyecto moderno
-cd w/moderno
+# 1. Ir a la carpeta del proyecto
+cd "Rosquillas Reyes"
 
 # 2. Instalar dependencias
 npm install
 
-# 3. Copiar las imágenes del proyecto original
-cp -r ../img ./public/img
-
-# 4. Iniciar el servidor de desarrollo
+# 3. Iniciar el servidor de desarrollo
 npm run dev
 ```
 
