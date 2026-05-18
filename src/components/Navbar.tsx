@@ -1,7 +1,7 @@
 // src/components/Navbar.tsx
 import { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { ShoppingCart, Menu, X } from 'lucide-react';
+import { ShoppingCart, Menu, X, User } from 'lucide-react';
 import { useCarrito } from '../store/carritoStore';
 
 export default function Navbar() {
@@ -19,6 +19,7 @@ export default function Navbar() {
     { to: '/',          label: 'Inicio'    },
     { to: '/productos', label: 'Productos' },
     { to: '/nosotros',  label: 'Nosotros'  },
+    { to: '/noticias',  label: 'Noticias'  },
     { to: '/contacto',  label: 'Contacto'  },
   ];
 
@@ -63,6 +64,15 @@ export default function Navbar() {
               {cantidadTotal}
             </span>
           )}
+        </Link>
+        
+        {/* Login icon */}
+        <Link
+          to="/login"
+          className="text-brand-brown hover:text-brand-orange transition-colors p-2"
+          aria-label="Iniciar sesión"
+        >
+          <User size={24} />
         </Link>
 
         {/* Hamburger móvil */}

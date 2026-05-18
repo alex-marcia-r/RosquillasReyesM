@@ -60,15 +60,6 @@ export const productos: Producto[] = [
     categoria: 'eventos',
     desc: 'Nuestra especialidad para eventos: pupusas de quesillo tostadas al horno. Ideales para compartir, servidas con su tradicional curtido.',
   },
-  {
-    id: 'empanadas',
-    img: '/img/Productos/Empanadas.png',
-    titulo: 'Empanadas Dulces',
-    precio: 130,
-    unidad: 'Bandeja',
-    categoria: 'regular',
-    desc: 'Empanadas dulces tradicionales, perfectas para acompañar tu café o como postre después de una buena comida nicaragüense.',
-  },
 ];
 
 export const getProductoById = (id: string): Producto | undefined =>
