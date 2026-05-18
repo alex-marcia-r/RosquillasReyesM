@@ -146,17 +146,6 @@ La aplicación estará disponible en **http://localhost:5173**
 
 ---
 
-## 🔮 Siguientes pasos
-
-- [ ] Conectar a una API REST con **NestJS** (`GET /api/productos`, `POST /api/contacto`)
-- [ ] Reemplazar datos estáticos con **React Query** + `fetch`
-- [ ] Agregar SEO por página con **react-helmet-async**
-- [ ] Página de Nosotros (`/nosotros`)
-- [ ] Autenticación de administrador con **JWT**
-- [ ] Deploy: frontend en **Vercel** · backend en **Railway** · DB en **Supabase**
-- [ ] Tests unitarios con **Vitest** + **Testing Library**
-
----
 
 <div align="center">
 
