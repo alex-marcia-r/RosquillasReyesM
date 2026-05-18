@@ -32,7 +32,7 @@ export default function Contacto() {
           <h2 className="font-bold text-xl text-brand-brown">Información de contacto</h2>
           {[
             { icon: <MapPin size={20} />, label: 'El Viejo, Chinandega, Nicaragua' },
-            { icon: <Phone  size={20} />, label: '+505 0000-0000' },
+            { icon: <Phone size={20} />, label: '+505 8250 1265 | +505 2344 0258' },
             { icon: <ExternalLink size={20} />, label: 'Rosquilla Reyes' },
           ].map(({ icon, label }) => (
             <div key={label} className="flex items-center gap-4 text-gray-600">

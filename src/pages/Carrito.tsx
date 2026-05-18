@@ -111,7 +111,7 @@ export default function Carrito() {
             <span>Total</span>
             <span className="text-brand-orange">C$ {total()}</span>
           </div>
-          <Link to="/contacto" id="btn-proceder-pago" className="btn-primary w-full justify-center">
+          <Link to="/forma-pago" id="btn-proceder-pago" className="btn-primary w-full justify-center">
             Proceder al pago
           </Link>
         </div>
