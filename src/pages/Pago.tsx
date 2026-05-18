@@ -4,14 +4,14 @@ import { useCarrito } from '../store/carritoStore';
 import { Check } from 'lucide-react';
 
 export default function Pago() {
-  const { totalCarrito, vaciarCarrito } = useCarrito();
+  const { total, vaciar } = useCarrito();
   const navigate = useNavigate();
-  const total = totalCarrito();
+  const totalAmount = total();
 
   const handleConfirmar = (e: React.FormEvent) => {
     e.preventDefault();
     alert('¡Pedido confirmado exitosamente!');
-    vaciarCarrito();
+    vaciar();
     navigate('/');
   };
 
@@ -65,7 +65,7 @@ export default function Pago() {
           </div>
           
           <button type="submit" className="w-full btn-primary py-4 text-lg font-bold flex items-center justify-center gap-2 mt-4 hover:scale-[1.02] transition-transform">
-            Confirmar Pedido (C$ {total.toFixed(2)}) <Check size={20} />
+            Confirmar Pedido (C$ {totalAmount.toFixed(2)}) <Check size={20} />
           </button>
         </form>
       </div>
