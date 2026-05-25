@@ -1,28 +1,143 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@400;500;600;700;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ── ElevenLabs Design Tokens ─────────────────────────── */
+:root {
+  /* Superficies */
+  --el-eggshell:  #fdfcfc;
+  --el-powder:    #f5f3f1;
+  --el-chalk:     #e5e5e5;
+  --el-fog:       #b1b0b0;
+  --el-gravel:    #777169;
+  --el-slate:     #a59f97;
+  --el-obsidian:  #000000;
+
+  /* Tipografía */
+  --font-editorial: 'Cormorant Garamond', 'Georgia', serif;
+  --font-ui: 'Inter', sans-serif;
+}
+
 @layer base {
-  * {
-    scroll-behavior: smooth;
-  }
+  * { scroll-behavior: smooth; }
+
   body {
-    font-family: 'Inter', sans-serif;
-    @apply bg-gray-100 text-brand-brown;
+    font-family: var(--font-ui);
+    background-color: var(--el-eggshell);
+    @apply text-brand-brown;
+  }
+
+  /* Todos los h1/h2 heredan el serif editorial por defecto */
+  h1, h2 {
+    font-family: var(--font-editorial);
+    font-weight: 300;
+    letter-spacing: -0.02em;
   }
 }
 
 @layer components {
+  /* ── Botón primario — pill naranja de marca ── */
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-6 py-3 bg-brand-orange text-white font-semibold rounded-full
-           transition-all duration-300 hover:bg-brand-brown hover:scale-105 shadow-lg shadow-brand-orange/30;
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-brand-orange text-white
+           font-medium text-sm rounded-full transition-all duration-200
+           hover:brightness-110 active:scale-[0.98]
+           shadow-[rgba(0,0,0,0.06)_0px_0px_0px_1px,rgba(0,0,0,0.04)_0px_1px_2px,rgba(0,0,0,0.04)_0px_2px_4px];
   }
+
+  /* ── Botón secundario — pill outline ── */
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 bg-white text-brand-brown
+           font-medium text-sm rounded-full border border-[#e5e5e5]
+           transition-all duration-200 hover:border-brand-orange hover:text-brand-orange active:scale-[0.98]
+           shadow-[rgba(0,0,0,0.06)_0px_0px_0px_1px,rgba(0,0,0,0.04)_0px_1px_2px];
+  }
+
+  /* ── Card base — hairline shadow ElevenLabs ── */
+  .card-el {
+    @apply bg-white rounded-2xl;
+    box-shadow:
+      rgba(0,0,0,0.4) 0px 0px 1px 0px,
+      rgba(0,0,0,0.04) 0px 2px 4px 0px;
+  }
+
+  /* ── Card hover — sombra levemente mayor, sin scale exagerado ── */
   .card-hover {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl;
+    @apply transition-all duration-300;
+    box-shadow:
+      rgba(0,0,0,0.4) 0px 0px 1px 0px,
+      rgba(0,0,0,0.04) 0px 2px 4px 0px;
   }
+  .card-hover:hover {
+    @apply -translate-y-0.5;
+    box-shadow:
+      rgba(0,0,0,0.4) 0px 0px 1px 0px,
+      rgba(0,0,0,0.08) 0px 4px 12px 0px;
+  }
+
+  /* ── Nav link ── */
   .nav-link {
-    @apply text-gray-700 font-semibold hover:text-brand-orange transition-colors duration-200;
+    @apply font-medium text-sm transition-colors duration-200;
+    color: #000000;
+    letter-spacing: 0.01em;
+  }
+  .nav-link:hover { @apply text-brand-orange; }
+
+  /* ── Eyebrow label (ElevenLabs section divider label) ── */
+  .el-eyebrow {
+    display: block;
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--el-gravel);
+  }
+
+  /* ── Headline editorial — Cormorant Garamond 300 ── */
+  .el-headline {
+    font-family: var(--font-editorial);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    color: #000000;
+  }
+
+  /* ── Input estilo ElevenLabs — solo border-bottom ── */
+  .el-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--el-chalk);
+    border-radius: 0;
+    padding: 10px 0;
+    font-size: 14px;
+    font-family: var(--font-ui);
+    color: #000000;
+    outline: none;
+    transition: border-color 150ms ease;
+  }
+  .el-input::placeholder { color: var(--el-slate); }
+  .el-input:focus        { border-bottom-color: theme('colors.brand.orange'); }
+  .el-input.is-error     { border-bottom-color: #ef4444; }
+
+  /* ── Superficie powder — hover / highlight ── */
+  .el-surface {
+    background-color: var(--el-powder);
+  }
+
+  /* ── Divider horizontal ElevenLabs ── */
+  .el-divider {
+    border: none;
+    border-top: 1px solid var(--el-chalk);
+  }
+
+  /* ── Sección header with eyebrow + headline ── */
+  .section-header {
+    @apply mb-10;
+  }
+  .section-header .el-eyebrow {
+    @apply mb-3;
   }
 }

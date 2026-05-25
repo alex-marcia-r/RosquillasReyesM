@@ -1,40 +1,114 @@
 // src/pages/Login.tsx
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useInputShake } from '../hooks/useInputShake';
 
 export default function Login() {
-  return (
-    <main className="pt-32 pb-24 px-[5%] flex justify-center bg-gray-50 min-h-screen">
-      <div className="w-full max-w-md bg-brand-dark rounded-3xl shadow-xl p-10 h-fit">
-        <h2 className="text-[2.5rem] font-bold text-white mb-8 text-center">
-          Iniciar Sesión
-        </h2>
-        
-        <form className="space-y-5" onSubmit={(e) => { e.preventDefault(); window.location.href = '/'; }}>
-          <div>
-            <label className="block text-sm font-semibold text-white/90 mb-2">Correo electrónico</label>
-            <input 
-              type="email" 
-              placeholder="tu@correo.com" 
-              required 
-              className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/10 text-white placeholder-white/60 focus:border-brand-orange focus:ring-0 outline-none transition-all"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-white/90 mb-2">Contraseña</label>
-            <input 
-              type="password" 
-              placeholder="••••••••" 
-              required 
-              className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/10 text-white placeholder-white/60 focus:border-brand-orange focus:ring-0 outline-none transition-all"
-            />
-          </div>
-          <button type="submit" className="w-full btn-primary py-3 text-lg font-bold hover:scale-[1.02] transition-transform">
-            Entrar
-          </button>
-        </form>
+  const [email, setEmail]       = useState('');
+  const [password, setPassword] = useState('');
 
-        <p className="text-center mt-6 text-white/70">
-          ¿No tienes cuenta? <Link to="#" className="text-brand-orange font-bold hover:underline">Regístrate</Link>
+  const emailShake    = useInputShake();
+  const passwordShake = useInputShake();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    let hasError = false;
+    if (!email.trim())    { emailShake.trigger();    hasError = true; }
+    if (!password.trim()) { passwordShake.trigger(); hasError = true; }
+    if (hasError) return;
+    window.location.href = '/';
+  };
+
+  return (
+    <main
+      className="min-h-screen pt-28 pb-20 px-[6%] flex items-start justify-center"
+      style={{ background: '#fdfcfc' }}
+    >
+      <div className="w-full max-w-md">
+        {/* Header editorial */}
+        <div className="mb-10">
+          <span className="el-eyebrow mb-3 block">Cuenta</span>
+          <h1
+            className="font-cormorant font-light text-brand-brown"
+            style={{ fontSize: 'clamp(32px,5vw,44px)', letterSpacing: '-0.02em' }}
+          >
+            Iniciar sesión
+          </h1>
+        </div>
+
+        {/* Card formulario */}
+        <div className="bg-white rounded-2xl border border-el-chalk p-8">
+          <form className="space-y-8" onSubmit={handleSubmit} noValidate>
+
+            {/* Email */}
+            <div>
+              <label className="el-eyebrow mb-3 block" htmlFor="login-email">
+                Correo electrónico
+              </label>
+              <div
+                ref={emailShake.wrapRef}
+                className={`t-input-wrap${emailShake.error ? ' is-error' : ''}`}
+              >
+                <div
+                  ref={emailShake.inputRef as React.RefObject<HTMLDivElement>}
+                  className={`t-input${emailShake.error ? ' is-error' : ''}`}
+                >
+                  <input
+                    id="login-email"
+                    type="email"
+                    placeholder="tu@correo.com"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      if (emailShake.error) emailShake.cancel();
+                    }}
+                    className="el-input"
+                  />
+                </div>
+                <p className="t-error-msg mt-1">Ingresa tu correo electrónico.</p>
+              </div>
+            </div>
+
+            {/* Contraseña */}
+            <div>
+              <label className="el-eyebrow mb-3 block" htmlFor="login-password">
+                Contraseña
+              </label>
+              <div
+                ref={passwordShake.wrapRef}
+                className={`t-input-wrap${passwordShake.error ? ' is-error' : ''}`}
+              >
+                <div
+                  ref={passwordShake.inputRef as React.RefObject<HTMLDivElement>}
+                  className={`t-input${passwordShake.error ? ' is-error' : ''}`}
+                >
+                  <input
+                    id="login-password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      if (passwordShake.error) passwordShake.cancel();
+                    }}
+                    className="el-input"
+                  />
+                </div>
+                <p className="t-error-msg mt-1">Ingresa tu contraseña.</p>
+              </div>
+            </div>
+
+            <button type="submit" className="btn-primary w-full justify-center py-3.5">
+              Entrar
+            </button>
+          </form>
+        </div>
+
+        <p className="text-center mt-6 text-sm" style={{ color: '#777169' }}>
+          ¿No tienes cuenta?{' '}
+          <Link to="#" className="text-brand-orange hover:underline font-medium">
+            Regístrate
+          </Link>
         </p>
       </div>
     </main>

@@ -1,36 +1,79 @@
 // src/pages/FormaPago.tsx
 import { Link } from 'react-router-dom';
-import { CreditCard, Banknote, Building2 } from 'lucide-react';
+import { CreditCard, Banknote, Building2, ArrowRight } from 'lucide-react';
+
+const metodos = [
+  {
+    id: 'tarjeta',
+    icon: <CreditCard size={40} strokeWidth={1.5} />,
+    titulo: 'Tarjeta de Crédito/Débito',
+    desc: 'Visa, Mastercard, American Express',
+  },
+  {
+    id: 'efectivo',
+    icon: <Banknote size={40} strokeWidth={1.5} />,
+    titulo: 'Pago en Efectivo',
+    desc: 'Contra entrega (delivery)',
+  },
+  {
+    id: 'transferencia',
+    icon: <Building2 size={40} strokeWidth={1.5} />,
+    titulo: 'Transferencia Bancaria',
+    desc: 'Depósito directo a cuenta',
+  },
+];
 
 export default function FormaPago() {
   return (
-    <main className="pt-32 pb-24 px-[5%] flex justify-center bg-gray-50 min-h-screen">
-      <div className="w-full max-w-3xl">
-        <h2 className="text-3xl font-black text-brand-brown mb-10 text-center">
-          Elige tu Forma de Pago
-        </h2>
-        
-        <div className="grid md:grid-cols-3 gap-6">
-          <Link to="/pago" className="bg-brand-brown p-10 rounded-3xl shadow-md hover:shadow-2xl hover:shadow-brand-orange/20 border-2 border-transparent hover:border-brand-orange hover:-translate-y-2 transition-all duration-400 flex flex-col items-center text-center group cursor-pointer">
-            <div className="text-brand-orange group-hover:scale-110 transition-transform duration-400 mb-4">
-              <CreditCard size={56} strokeWidth={1.5} />
-            </div>
-            <h3 className="text-[1.2rem] font-semibold text-white">Tarjeta de Crédito/Débito</h3>
-          </Link>
+    <main
+      className="min-h-screen pt-28 pb-20 px-[6%]"
+      style={{ background: '#fdfcfc' }}
+    >
+      <div className="max-w-4xl mx-auto">
 
-          <Link to="/pago" className="bg-brand-brown p-10 rounded-3xl shadow-md hover:shadow-2xl hover:shadow-brand-orange/20 border-2 border-transparent hover:border-brand-orange hover:-translate-y-2 transition-all duration-400 flex flex-col items-center text-center group cursor-pointer">
-            <div className="text-brand-orange group-hover:scale-110 transition-transform duration-400 mb-4">
-              <Banknote size={56} strokeWidth={1.5} />
-            </div>
-            <h3 className="text-[1.2rem] font-semibold text-white">Pago en Efectivo (Delivery)</h3>
-          </Link>
+        {/* Header editorial */}
+        <div className="mb-12 pb-10 border-b border-el-chalk">
+          <span className="el-eyebrow mb-3 block">Paso 1 de 2</span>
+          <h1
+            className="font-cormorant font-light text-brand-brown"
+            style={{ fontSize: 'clamp(32px,5vw,48px)', letterSpacing: '-0.02em' }}
+          >
+            Elige tu forma de pago
+          </h1>
+        </div>
 
-          <Link to="/pago" className="bg-brand-brown p-10 rounded-3xl shadow-md hover:shadow-2xl hover:shadow-brand-orange/20 border-2 border-transparent hover:border-brand-orange hover:-translate-y-2 transition-all duration-400 flex flex-col items-center text-center group cursor-pointer">
-            <div className="text-brand-orange group-hover:scale-110 transition-transform duration-400 mb-4">
-              <Building2 size={56} strokeWidth={1.5} />
-            </div>
-            <h3 className="text-[1.2rem] font-semibold text-white">Transferencia Bancaria</h3>
-          </Link>
+        {/* Cards de método de pago */}
+        <div className="grid md:grid-cols-3 gap-5">
+          {metodos.map(({ id, icon, titulo, desc }) => (
+            <Link
+              key={id}
+              to="/pago"
+              className="bg-white rounded-2xl border border-el-chalk p-8 flex flex-col items-center text-center
+                         transition-all duration-200 group
+                         hover:border-brand-orange hover:-translate-y-0.5 hover:shadow-hairline-md"
+            >
+              <div
+                className="w-16 h-16 rounded-full flex items-center justify-center mb-5 text-brand-orange
+                           transition-colors duration-200"
+                style={{ background: 'rgba(255,159,13,0.08)' }}
+              >
+                {icon}
+              </div>
+              <h3
+                className="font-cormorant font-light text-lg text-brand-brown mb-2"
+                style={{ letterSpacing: '-0.01em' }}
+              >
+                {titulo}
+              </h3>
+              <p className="text-xs mb-5" style={{ color: '#777169' }}>{desc}</p>
+              <span
+                className="mt-auto inline-flex items-center gap-1.5 text-xs font-medium text-brand-orange opacity-0
+                           group-hover:opacity-100 transition-opacity"
+              >
+                Seleccionar <ArrowRight size={12} />
+              </span>
+            </Link>
+          ))}
         </div>
       </div>
     </main>
