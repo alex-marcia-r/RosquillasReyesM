@@ -1,5 +1,5 @@
 // src/components/Navbar.tsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { ShoppingCart, Menu, X, User } from 'lucide-react';
 import { useCarrito } from '../store/carritoStore';
@@ -7,13 +7,24 @@ import { useCarrito } from '../store/carritoStore';
 export default function Navbar() {
   const [sticky, setSticky] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
   const cantidadTotal = useCarrito((s) => s.cantidadTotal());
+  const prevCantidad  = useRef(cantidadTotal);
+  const [badgeKey, setBadgeKey] = useState(0); // fuerza re-mount del badge para replay
 
   useEffect(() => {
     const onScroll = () => setSticky(window.scrollY > 50);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  // Cuando el contador sube, re-lanzamos la animación del badge
+  useEffect(() => {
+    if (cantidadTotal > prevCantidad.current) {
+      setBadgeKey((k) => k + 1);
+    }
+    prevCantidad.current = cantidadTotal;
+  }, [cantidadTotal]);
 
   const links = [
     { to: '/',          label: 'Inicio'    },
@@ -51,6 +62,7 @@ export default function Navbar() {
 
       {/* Carrito + hamburger */}
       <div className="flex items-center gap-3">
+        {/* Botón carrito con badge animado */}
         <Link
           to="/carrito"
           id="btn-carrito-nav"
@@ -58,14 +70,21 @@ export default function Navbar() {
                      shadow-md shadow-brand-orange/40 hover:bg-brand-brown transition-colors duration-300"
         >
           <ShoppingCart size={20} />
+
+          {/* NotificationBadge */}
           {cantidadTotal > 0 && (
-            <span className="absolute -top-1.5 -right-1.5 bg-brand-brown text-white text-[10px]
-                             font-bold rounded-full w-5 h-5 flex items-center justify-center">
-              {cantidadTotal}
+            <span
+              key={badgeKey}
+              className="t-badge"
+              data-open="true"
+            >
+              <span className="t-badge-dot bg-brand-brown text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                {cantidadTotal}
+              </span>
             </span>
           )}
         </Link>
-        
+
         {/* Login icon */}
         <Link
           to="/login"
@@ -75,14 +94,17 @@ export default function Navbar() {
           <User size={24} />
         </Link>
 
-        {/* Hamburger móvil */}
+        {/* Hamburger con IconSwap */}
         <button
           id="btn-menu-mobile"
-          className="md:hidden text-brand-brown"
+          className="md:hidden text-brand-brown p-1"
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Menú"
+          aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
         >
-          {menuOpen ? <X size={28} /> : <Menu size={28} />}
+          <span className="t-icon-swap" data-state={menuOpen ? 'b' : 'a'}>
+            <span className="t-icon" data-icon="a"><Menu size={28} /></span>
+            <span className="t-icon" data-icon="b"><X size={28} /></span>
+          </span>
         </button>
       </div>
 

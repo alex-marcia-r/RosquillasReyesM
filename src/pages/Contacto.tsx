@@ -1,17 +1,46 @@
 // src/pages/Contacto.tsx
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { MapPin, Phone, ExternalLink, Send } from 'lucide-react';
+import { useInputShake } from '../hooks/useInputShake';
 
 export default function Contacto() {
   const [form, setForm] = useState({ nombre: '', email: '', mensaje: '' });
   const [enviado, setEnviado] = useState(false);
 
+  // Shake por cada campo
+  const nombreShake  = useInputShake();
+  const emailShake   = useInputShake();
+  const mensajeShake = useInputShake();
+
+  // Success check al enviar
+  const checkRef = useRef<HTMLSpanElement>(null);
+  const [checkState, setCheckState] = useState<'out' | 'in'>('out');
+
+  const triggerCheck = () => {
+    setCheckState('out');
+    requestAnimationFrame(() => {
+      if (checkRef.current) void checkRef.current.offsetWidth;
+      setCheckState('in');
+    });
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Aquí iría la llamada a la API (fetch POST /api/contacto)
+
+    // Regex para validar el formato de correo electrónico
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Validación visual con shake
+    let hasError = false;
+    if (!form.nombre.trim())  { nombreShake.trigger();  hasError = true; }
+    if (!form.email.trim() || !emailRegex.test(form.email)) { emailShake.trigger();   hasError = true; }
+    if (!form.mensaje.trim()) { mensajeShake.trigger(); hasError = true; }
+    if (hasError) return;
+
     console.log('Formulario enviado:', form);
-    setEnviado(true);
     setForm({ nombre: '', email: '', mensaje: '' });
+    setEnviado(true);
+    triggerCheck();
     setTimeout(() => setEnviado(false), 4000);
   };
 
@@ -46,59 +75,128 @@ export default function Contacto() {
         </div>
 
         {/* Formulario */}
-        <form onSubmit={handleSubmit} className="bg-white rounded-3xl p-8 shadow-sm space-y-5">
+        <form onSubmit={handleSubmit} className="bg-white rounded-3xl p-8 shadow-sm space-y-5" noValidate>
+          {/* Feedback de éxito */}
           {enviado && (
-            <div className="bg-green-50 text-green-700 text-sm font-semibold px-4 py-3 rounded-xl">
+            <div className="bg-green-50 text-green-700 text-sm font-semibold px-4 py-3 rounded-xl flex items-center gap-3">
+              {/* SuccessCheck */}
+              <span
+                ref={checkRef}
+                className="t-success-check"
+                data-state={checkState}
+                aria-hidden="true"
+              >
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path
+                    d="M4 10.5L8.5 15L16 7"
+                    stroke="#16a34a"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
               ¡Mensaje enviado! Nos comunicaremos pronto.
             </div>
           )}
 
+          {/* Campo nombre */}
           <div>
             <label htmlFor="input-nombre" className="text-xs font-semibold text-gray-500 block mb-1">
               Nombre
             </label>
-            <input
-              id="input-nombre"
-              type="text"
-              required
-              value={form.nombre}
-              onChange={(e) => setForm({ ...form, nombre: e.target.value })}
-              placeholder="Tu nombre"
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm
-                         focus:outline-none focus:ring-2 focus:ring-brand-orange/40"
-            />
+            <div
+              ref={nombreShake.wrapRef}
+              className={`t-input-wrap${nombreShake.error ? ' is-error' : ''}`}
+            >
+              <div
+                ref={nombreShake.inputRef as React.RefObject<HTMLDivElement>}
+                className={`t-input${nombreShake.error ? ' is-error' : ''}`}
+              >
+                <input
+                  id="input-nombre"
+                  type="text"
+                  value={form.nombre}
+                  onChange={(e) => {
+                    setForm({ ...form, nombre: e.target.value });
+                    if (nombreShake.error) nombreShake.cancel();
+                  }}
+                  placeholder="Tu nombre"
+                  className={`w-full border rounded-xl px-4 py-3 text-sm
+                             focus:outline-none focus:ring-2 focus:ring-brand-orange/40 transition-colors
+                             ${nombreShake.error
+                               ? 'border-red-400 bg-red-50/40'
+                               : 'border-gray-200'}`}
+                />
+              </div>
+              <p className="t-error-msg">Por favor ingresa tu nombre.</p>
+            </div>
           </div>
 
+          {/* Campo email */}
           <div>
             <label htmlFor="input-email" className="text-xs font-semibold text-gray-500 block mb-1">
               Correo electrónico
             </label>
-            <input
-              id="input-email"
-              type="email"
-              required
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              placeholder="tu@correo.com"
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm
-                         focus:outline-none focus:ring-2 focus:ring-brand-orange/40"
-            />
+            <div
+              ref={emailShake.wrapRef}
+              className={`t-input-wrap${emailShake.error ? ' is-error' : ''}`}
+            >
+              <div
+                ref={emailShake.inputRef as React.RefObject<HTMLDivElement>}
+                className={`t-input${emailShake.error ? ' is-error' : ''}`}
+              >
+                <input
+                  id="input-email"
+                  type="email"
+                  value={form.email}
+                  onChange={(e) => {
+                    setForm({ ...form, email: e.target.value });
+                    if (emailShake.error) emailShake.cancel();
+                  }}
+                  placeholder="tu@correo.com"
+                  className={`w-full border rounded-xl px-4 py-3 text-sm
+                             focus:outline-none focus:ring-2 focus:ring-brand-orange/40 transition-colors
+                             ${emailShake.error
+                               ? 'border-red-400 bg-red-50/40'
+                               : 'border-gray-200'}`}
+                />
+              </div>
+              <p className="t-error-msg">Por favor ingresa un correo válido.</p>
+            </div>
           </div>
 
+          {/* Campo mensaje */}
           <div>
             <label htmlFor="input-mensaje" className="text-xs font-semibold text-gray-500 block mb-1">
               Mensaje
             </label>
-            <textarea
-              id="input-mensaje"
-              required
-              rows={4}
-              value={form.mensaje}
-              onChange={(e) => setForm({ ...form, mensaje: e.target.value })}
-              placeholder="¿En qué podemos ayudarte?"
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm resize-none
-                         focus:outline-none focus:ring-2 focus:ring-brand-orange/40"
-            />
+            <div
+              ref={mensajeShake.wrapRef}
+              className={`t-input-wrap${mensajeShake.error ? ' is-error' : ''}`}
+            >
+              <div
+                ref={mensajeShake.inputRef as React.RefObject<HTMLDivElement>}
+                className={`t-input${mensajeShake.error ? ' is-error' : ''}`}
+              >
+                <textarea
+                  id="input-mensaje"
+                  rows={4}
+                  value={form.mensaje}
+                  onChange={(e) => {
+                    setForm({ ...form, mensaje: e.target.value });
+                    if (mensajeShake.error) mensajeShake.cancel();
+                  }}
+                  placeholder="¿En qué podemos ayudarte?"
+                  className={`w-full border rounded-xl px-4 py-3 text-sm resize-none
+                             focus:outline-none focus:ring-2 focus:ring-brand-orange/40 transition-colors
+                             ${mensajeShake.error
+                               ? 'border-red-400 bg-red-50/40'
+                               : 'border-gray-200'}`}
+                />
+              </div>
+              <p className="t-error-msg">Por favor escribe tu mensaje.</p>
+            </div>
           </div>
 
           <button id="btn-enviar-contacto" type="submit" className="btn-primary w-full justify-center">

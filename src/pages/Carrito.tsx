@@ -2,6 +2,26 @@
 import { Link } from 'react-router-dom';
 import { useCarrito } from '../store/carritoStore';
 import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
+import { useNumberPopIn } from '../hooks/useNumberPopIn';
+
+function AnimatedPrice({ value, className }: { value: number; className?: string }) {
+  const str = String(value);
+  const { playing } = useNumberPopIn(value);
+
+  return (
+    <span className={`t-digit-group${playing ? ' is-animating' : ''} ${className ?? ''}`}>
+      {str.split('').map((ch, i) => (
+        <span
+          key={i}
+          className="t-digit"
+          data-stagger={i > 0 ? i : undefined}
+        >
+          {ch}
+        </span>
+      ))}
+    </span>
+  );
+}
 
 export default function Carrito() {
   const { items, quitar, actualizar, total, vaciar } = useCarrito();
@@ -19,6 +39,8 @@ export default function Carrito() {
     );
   }
 
+  const totalValue = total();
+
   return (
     <main className="pt-28 pb-16 px-[8%]">
       <h1 className="text-3xl font-black text-brand-brown mb-8">
@@ -28,62 +50,67 @@ export default function Carrito() {
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Lista */}
         <div className="lg:col-span-2 space-y-4">
-          {items.map(({ producto, cantidad }) => (
-            <div
-              key={producto.id}
-              id={`carrito-item-${producto.id}`}
-              className="flex items-center gap-5 bg-white rounded-3xl p-5 shadow-sm"
-            >
-              <img
-                src={producto.img}
-                alt={producto.titulo}
-                className="w-20 h-20 object-contain rounded-xl bg-gray-50 p-2 flex-shrink-0"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src =
-                    'https://placehold.co/80x80/D9C5A0/542B12?text=RR';
-                }}
-              />
-              <div className="flex-1 min-w-0">
-                <h3 className="font-bold text-brand-brown truncate">{producto.titulo}</h3>
-                <p className="text-brand-orange font-black">C$ {producto.precio}</p>
-              </div>
-
-              {/* Cantidad */}
-              <div className="flex items-center gap-2">
-                <button
-                  id={`btn-restar-${producto.id}`}
-                  onClick={() => actualizar(producto.id, cantidad - 1)}
-                  className="w-7 h-7 rounded-full border border-gray-200 flex items-center justify-center
-                             hover:border-brand-orange hover:text-brand-orange transition-colors text-sm"
-                >
-                  <Minus size={14} />
-                </button>
-                <span className="w-6 text-center font-semibold text-sm">{cantidad}</span>
-                <button
-                  id={`btn-sumar-${producto.id}`}
-                  onClick={() => actualizar(producto.id, cantidad + 1)}
-                  className="w-7 h-7 rounded-full border border-gray-200 flex items-center justify-center
-                             hover:border-brand-orange hover:text-brand-orange transition-colors text-sm"
-                >
-                  <Plus size={14} />
-                </button>
-              </div>
-
-              {/* Subtotal */}
-              <div className="text-right min-w-[70px]">
-                <p className="font-black text-brand-brown">C$ {producto.precio * cantidad}</p>
-              </div>
-
-              <button
-                id={`btn-quitar-${producto.id}`}
-                onClick={() => quitar(producto.id)}
-                className="text-gray-300 hover:text-red-400 transition-colors ml-2"
-                aria-label="Quitar producto"
+          {items.map(({ producto, cantidad }) => {
+            const subtotal = producto.precio * cantidad;
+            return (
+              <div
+                key={producto.id}
+                id={`carrito-item-${producto.id}`}
+                className="flex items-center gap-5 bg-white rounded-3xl p-5 shadow-sm"
               >
-                <Trash2 size={18} />
-              </button>
-            </div>
-          ))}
+                <img
+                  src={producto.img}
+                  alt={producto.titulo}
+                  className="w-20 h-20 object-contain rounded-xl bg-gray-50 p-2 flex-shrink-0"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src =
+                      'https://placehold.co/80x80/D9C5A0/542B12?text=RR';
+                  }}
+                />
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-brand-brown truncate">{producto.titulo}</h3>
+                  <p className="text-brand-orange font-black">C$ {producto.precio}</p>
+                </div>
+
+                {/* Cantidad */}
+                <div className="flex items-center gap-2">
+                  <button
+                    id={`btn-restar-${producto.id}`}
+                    onClick={() => actualizar(producto.id, cantidad - 1)}
+                    className="w-7 h-7 rounded-full border border-gray-200 flex items-center justify-center
+                               hover:border-brand-orange hover:text-brand-orange transition-colors text-sm"
+                  >
+                    <Minus size={14} />
+                  </button>
+                  <span className="w-6 text-center font-semibold text-sm">{cantidad}</span>
+                  <button
+                    id={`btn-sumar-${producto.id}`}
+                    onClick={() => actualizar(producto.id, cantidad + 1)}
+                    className="w-7 h-7 rounded-full border border-gray-200 flex items-center justify-center
+                               hover:border-brand-orange hover:text-brand-orange transition-colors text-sm"
+                  >
+                    <Plus size={14} />
+                  </button>
+                </div>
+
+                {/* Subtotal con pop-in */}
+                <div className="text-right min-w-[70px]">
+                  <p className="font-black text-brand-brown">
+                    C$ <AnimatedPrice value={subtotal} />
+                  </p>
+                </div>
+
+                <button
+                  id={`btn-quitar-${producto.id}`}
+                  onClick={() => quitar(producto.id)}
+                  className="text-gray-300 hover:text-red-400 transition-colors ml-2"
+                  aria-label="Quitar producto"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
+            );
+          })}
 
           <button
             id="btn-vaciar-carrito"
@@ -102,14 +129,16 @@ export default function Carrito() {
               <div key={producto.id} className="flex justify-between">
                 <span>{producto.titulo} × {cantidad}</span>
                 <span className="font-semibold text-brand-brown">
-                  C$ {producto.precio * cantidad}
+                  C$ <AnimatedPrice value={producto.precio * cantidad} />
                 </span>
               </div>
             ))}
           </div>
           <div className="border-t border-gray-100 pt-4 flex justify-between font-black text-lg text-brand-brown mb-6">
             <span>Total</span>
-            <span className="text-brand-orange">C$ {total()}</span>
+            <span className="text-brand-orange">
+              C$ <AnimatedPrice value={totalValue} />
+            </span>
           </div>
           <Link to="/forma-pago" id="btn-proceder-pago" className="btn-primary w-full justify-center">
             Proceder al pago

@@ -1,6 +1,6 @@
 // src/pages/DetalleProducto.tsx
 import { useParams, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { getProductoById } from '../data/productos';
 import { useCarrito } from '../store/carritoStore';
 import { ShoppingCart, ArrowLeft, Plus, Minus } from 'lucide-react';
@@ -13,6 +13,10 @@ export default function DetalleProducto() {
   const producto = getProductoById(id ?? '');
   const [cantidad, setCantidad] = useState(1);
   const [agregado, setAgregado] = useState(false);
+
+  // SuccessCheck ref + estado
+  const checkRef = useRef<HTMLSpanElement>(null);
+  const [checkState, setCheckState] = useState<'out' | 'in'>('out');
 
   if (!producto) {
     return (
@@ -27,8 +31,19 @@ export default function DetalleProducto() {
 
   const handleAgregar = () => {
     agregar(producto, cantidad);
+
+    // Trigger success check
+    setCheckState('out');
+    requestAnimationFrame(() => {
+      if (checkRef.current) void checkRef.current.offsetWidth;
+      setCheckState('in');
+    });
+
     setAgregado(true);
-    setTimeout(() => setAgregado(false), 2000);
+    setTimeout(() => {
+      setAgregado(false);
+      setCheckState('out');
+    }, 2500);
   };
 
   return (
@@ -93,15 +108,44 @@ export default function DetalleProducto() {
             </button>
           </div>
 
-          <button
-            id="btn-agregar-carrito"
-            onClick={handleAgregar}
-            className={`btn-primary w-full justify-center text-base py-4 transition-all
-              ${agregado ? '!bg-green-500 !shadow-green-500/30' : ''}`}
-          >
-            <ShoppingCart size={20} />
-            {agregado ? '¡Agregado!' : 'Agregar al carrito'}
-          </button>
+          {/* Botón + SuccessCheck */}
+          <div className="relative">
+            <button
+              id="btn-agregar-carrito"
+              onClick={handleAgregar}
+              disabled={agregado}
+              className={`btn-primary w-full justify-center text-base py-4 transition-all
+                ${agregado ? '!bg-green-500 !shadow-green-500/30' : ''}`}
+            >
+              {agregado ? (
+                <>
+                  {/* SuccessCheck inline */}
+                  <span
+                    ref={checkRef}
+                    className="t-success-check"
+                    data-state={checkState}
+                    aria-hidden="true"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path
+                        d="M4 10.5L8.5 15L16 7"
+                        stroke="white"
+                        strokeWidth="2.2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                  ¡Agregado!
+                </>
+              ) : (
+                <>
+                  <ShoppingCart size={20} />
+                  Agregar al carrito
+                </>
+              )}
+            </button>
+          </div>
         </div>
       </div>
     </main>
