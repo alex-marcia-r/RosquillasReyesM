@@ -37,7 +37,7 @@ export default function Navbar() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-[10%] transition-all duration-500
-        ${sticky ? 'py-3 shadow-lg bg-white/95 ' : 'py-4 bg-white'}`}
+        ${sticky ? 'py-3 shadow-lg bg-white/95 backdrop-blur-sm' : 'py-4 bg-white'}`}
     >
       {/* Logo */}
       <Link to="/" className="text-2xl font-black text-brand-brown underline tracking-tight">

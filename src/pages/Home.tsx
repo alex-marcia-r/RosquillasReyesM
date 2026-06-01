@@ -13,7 +13,7 @@ const carouselSlides = [
   },
   {
     title: 'El toque ideal',
-    bg: 'https://scontent.fmga3-2.fna.fbcdn.net/v/t1.6435-9/129820471_3452004274882771_7090790656303660067_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=C5q7obAIc8kQ7kNvwFrlq1l&_nc_oc=AdoqBCMNv5Tt--4g3i2-LgE-sfRt6y0dm573qojqGZpqqth9hozu1YIiHHhJw4Dg-ik&_nc_zt=23&_nc_ht=scontent.fmga3-2.fna&_nc_gid=Xjv44jSkTIyaVo3npZ9lKQ&_nc_ss=7b289&oh=00_Af9vDZRNUaNLTI1HyvCDHjpHgq3SZP68ZpOctArMLleANQ&oe=6A454245',
+    bg: 'https://scontent.fmga4-1.fna.fbcdn.net/v/t39.30808-6/596808286_1428444739289115_6381700090379785475_n.jpg?stp=cp6_dst-jpg_s590x590_tt6&_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=ArP_Ab7oWoMQ7kNvwGQb0IC&_nc_oc=Adpx9PSsnkMyvEkaLemc9zqs6oP7E9X9j64lZiUzgSTRM1yzXoHGX1i18WSRvY26Pc0&_nc_zt=23&_nc_ht=scontent.fmga4-1.fna&_nc_gid=JYikIbQ2adgeAbCClfuk7A&_nc_ss=7b2a8&oh=00_Af5lTes6vXaViTipztUuIPTm3sgxdUbK2nJfigkueElN3A&oe=6A103525',
   },
   {
     title: 'Perfecto para tu café',
@@ -79,7 +79,7 @@ export default function Home() {
       </section>
 
       {/* ── Categorías ── */}
-      <section className="py-20 px-[10%]">
+      <section className="py-16 px-[10%]">
         <h2 className="text-center text-2xl font-bold text-brand-navy mb-10">
           Tipos de Rosquillas y Antojos
         </h2>
@@ -111,7 +111,7 @@ export default function Home() {
       </section>
 
       {/* ── Carrusel Rediseñado (Nuestra Galería) ── */}
-      <section className="relative w-full min-h-[500px] md:h-[600px] flex items-center justify-center overflow-hidden  bg-black">
+      <section className="relative w-full min-h-[500px] md:h-[600px] flex items-center justify-center overflow-hidden my-12 bg-black">
         {/* Fondo con imagen opaca y desenfocada */}
         {carouselSlides.map((slide, i) => (
           <div

@@ -4,7 +4,7 @@ import { Phone, MapPin } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-white  pt-12 pb-6 px-[5%]">
+    <footer className="bg-white mt-8 pt-12 pb-6 px-[5%]">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-sm text-brand-navy mb-8">
         {/* Marca */}
         <div className="col-span-2 md:col-span-1">

@@ -4,9 +4,9 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react';
 
 export default function Nosotros() {
   return (
-    <main className="pt-16 pb-16 bg-white">
+    <main className="pt-24 pb-16">
       {/* Hero Nosotros */}
-      <section className="bg-brand-brown min-h-[500px] flex items-center px-[10%]">
+      <section className="bg-brand-brown min-h-[400px] flex items-center px-[10%]">
         <div className="w-full bg-brand-cream rounded-4xl grid md:grid-cols-2 gap-8 items-center px-[5%] py-14 overflow-hidden">
           <div>
             <p className="text-xs font-bold tracking-widest text-brand-orange uppercase mb-3">
@@ -23,7 +23,7 @@ export default function Nosotros() {
               Ver productos <ArrowRight size={18} />
             </Link>
           </div>
-          <div className="rounded-2xl  ">
+          <div className="rounded-2xl overflow-hidden shadow-xl hidden md:block">
             <img
               src="/img/imagen-nosotros.png"
               alt="Imagen de nosotros"
