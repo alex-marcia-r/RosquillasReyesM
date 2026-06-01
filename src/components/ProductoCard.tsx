@@ -1,7 +1,7 @@
 // src/components/ProductoCard.tsx
 // Componente reutilizable para mostrar un producto en la grilla
 import { Link } from 'react-router-dom';
-import { Producto } from '../danpmta/productos';
+import { Producto } from '../data/productos';
 
 interface Props {
   producto: Producto;
