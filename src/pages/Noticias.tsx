@@ -33,7 +33,7 @@ export default function Noticias() {
   ];
 
   return (
-    <main className="pt-24 pb-16 bg-gray-50 min-h-screen">
+    <main className="pt-16 pb-16 bg-white min-h-screen">
       <section className="bg-brand-brown min-h-[200px] flex items-center justify-center px-[10%] mb-12">
         <h1 className="text-4xl md:text-5xl font-black text-brand-orange tracking-wider">
           NOTICIAS
