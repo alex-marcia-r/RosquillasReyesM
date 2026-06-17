@@ -15,11 +15,11 @@ export default function ProductoCard({ producto }: Props) {
       className="group block bg-white rounded-3xl overflow-hidden shadow-sm card-hover"
     >
       {/* Imagen */}
-      <div className="relative bg-gray-50 flex items-center justify-center h-52 overflow-hidden">
+      <div className="items-center h-52 ">
         <img
           src={producto.img}
           alt={producto.titulo}
-          className="h-40 w-40 object-contain transition-transform duration-500 group-hover:scale-110"
+          className="h-full w-full max-w-full "
           onError={(e) => {
             (e.target as HTMLImageElement).src =
               'https://placehold.co/160x160/D9C5A0/542B12?text=RR';
