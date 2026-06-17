@@ -1,5 +1,5 @@
 // src/components/FloatingWhatsApp.tsx
-import React from 'react';
+
 
 export default function FloatingWhatsApp() {
   const whatsappUrl = 'https://wa.me/50581759257';
