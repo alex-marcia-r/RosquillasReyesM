@@ -21,48 +21,53 @@ export default function Productos() {
   });
 
   return (
-    <main className="pt-28 pb-16 px-[8%]">
+    <main className="pt-32 pb-20 px-[6%] md:px-[8%] relative z-10">
       {/* Hero */}
-      <div className="text-center mb-10">
-        <h1 className="text-4xl font-black text-brand-brown mb-2">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl md:text-5xl font-black text-brand-brown mb-3 tracking-tight">
           Explora nuestro <span className="text-brand-orange">catálogo</span>
         </h1>
-        <p className="text-gray-500 max-w-lg mx-auto text-sm">
-          Si deseas productos para eventos,{' '}
-          <a href="/contacto" className="text-brand-orange font-semibold hover:underline">
-            contáctanos
+        <p className="text-brand-navy/70 font-semibold max-w-lg mx-auto text-sm md:text-base leading-relaxed">
+          Si deseas productos para eventos especiales,{' '}
+          <a href="/contacto" className="text-brand-orange font-bold hover:underline transition-colors">
+            contáctanos directamente
           </a>
           .
         </p>
       </div>
 
       {/* Buscador + Filtros */}
-      <div className="flex flex-col sm:flex-row items-center gap-4 mb-10">
-        {/* Buscador */}
-        <div className="relative flex-1 max-w-sm">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+      <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-12">
+        {/* Buscador - Versión CORREGIDA */}
+        <div className="relative w-full md:max-w-md">
+          {/* Icono - Ahora con z-index alto y posicionamiento correcto */}
+          <Search 
+            size={20} 
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-brown/70 pointer-events-none z-20" 
+            style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)' }}
+          />
           <input
             id="input-busqueda-productos"
             type="text"
             placeholder="Buscar producto..."
             value={busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
-            className="w-full pl-9 pr-4 py-2.5 rounded-full border border-gray-200 bg-white
-                       text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange/40"
+            className="w-full pl-12 pr-4 py-3 rounded-full glass-input relative z-10"
+            style={{ paddingLeft: '48px' }}
           />
         </div>
 
         {/* Pills de filtro */}
-        <div className="flex gap-2">
+        <div className="flex flex-wrap justify-center gap-3 w-full md:w-auto">
           {FILTROS.map(({ label, value }) => (
             <button
               key={value}
               id={`filtro-${value}`}
               onClick={() => setFiltro(value)}
-              className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200
+              className={`px-6 py-2.5 rounded-full text-sm font-black tracking-wide transition-all duration-300
                 ${filtro === value
-                  ? 'bg-brand-orange text-white shadow-md shadow-brand-orange/30'
-                  : 'bg-white text-gray-500 border border-gray-200 hover:border-brand-orange hover:text-brand-orange'
+                  ? 'bg-brand-orange text-white shadow-lg shadow-brand-orange/30 border border-brand-orange scale-105'
+                  : 'bg-white/40 text-brand-brown/85 border border-white/60 hover:border-brand-orange/60 hover:text-brand-orange hover:bg-white/70'
                 }`}
             >
               {label}
@@ -73,13 +78,15 @@ export default function Productos() {
 
       {/* Grilla */}
       {filtrados.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
           {filtrados.map((p) => (
             <ProductoCard key={p.id} producto={p} />
           ))}
         </div>
       ) : (
-        <p className="text-center text-gray-400 py-20">No se encontraron productos.</p>
+        <div className="glass-card rounded-3xl p-16 text-center border-white/60">
+          <p className="text-brand-brown/60 font-bold text-lg">No se encontraron productos en esta categoría.</p>
+        </div>
       )}
     </main>
   );

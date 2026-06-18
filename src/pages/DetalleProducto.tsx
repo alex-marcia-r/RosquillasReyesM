@@ -47,23 +47,23 @@ export default function DetalleProducto() {
   };
 
   return (
-    <main className="pt-28 pb-16 px-[8%]">
+    <main className="pt-32 pb-20 px-[6%] md:px-[8%] relative z-10">
       {/* Breadcrumb */}
       <button
         id="btn-volver-productos"
         onClick={() => navigate(-1)}
-        className="flex items-center gap-1 text-sm text-gray-400 hover:text-brand-orange transition-colors mb-8"
+        className="flex items-center gap-1 text-sm font-bold text-brand-brown/70 hover:text-brand-orange hover:translate-x-[-2px] transition-all mb-8"
       >
-        <ArrowLeft size={16} /> Volver
+        <ArrowLeft size={16} /> Volver a catálogo
       </button>
 
-      <div className="bg-white rounded-4xl shadow-sm p-8 md:p-12 grid md:grid-cols-2 gap-12 items-center">
+      <div className="glass-card rounded-4xl border-white/60 p-8 md:p-12 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         {/* Imagen */}
-        <div className="flex items-center justify-center bg-gray-50 rounded-3xl p-8 h-72">
+        <div className="flex items-center justify-center bg-white/30 backdrop-blur-md border border-white/30 rounded-3xl p-8 h-80 md:h-[400px]">
           <img
             src={producto.img}
             alt={producto.titulo}
-            className="h-full w-full object-contain"
+            className="h-full w-auto object-contain max-h-full transition-transform duration-500 hover:scale-102"
             onError={(e) => {
               (e.target as HTMLImageElement).src =
                 'https://placehold.co/300x300/D9C5A0/542B12?text=RR';
@@ -74,17 +74,17 @@ export default function DetalleProducto() {
         {/* Info */}
         <div>
           {producto.categoria === 'eventos' && (
-            <span className="inline-block bg-brand-orange/10 text-brand-orange text-xs font-bold
-                             uppercase tracking-wider px-3 py-1 rounded-full mb-3">
+            <span className="inline-block bg-brand-orange/15 text-brand-orange text-xs font-black
+                             uppercase tracking-wider px-3.5 py-1.5 rounded-full mb-4 border border-brand-orange/20">
               Exclusiva para eventos
             </span>
           )}
-          <h1 className="text-3xl font-black text-brand-brown mb-3">{producto.titulo}</h1>
-          <p className="text-gray-500 text-sm leading-relaxed mb-6">{producto.desc}</p>
+          <h1 className="text-3xl md:text-4xl font-black text-brand-brown mb-4 leading-tight">{producto.titulo}</h1>
+          <p className="text-brand-navy/80 text-sm md:text-base font-semibold leading-relaxed mb-6">{producto.desc}</p>
 
-          <div className="text-4xl font-black text-brand-orange mb-1">
+          <div className="text-4xl font-black text-brand-orange mb-4">
             C$ {producto.precio}
-            <span className="text-base font-normal text-gray-400 ml-2">/ {producto.unidad}</span>
+            <span className="text-base font-bold text-brand-brown/60 ml-2">/ {producto.unidad}</span>
           </div>
 
           {/* Cantidad */}
@@ -92,17 +92,19 @@ export default function DetalleProducto() {
             <button
               id="btn-restar-cantidad"
               onClick={() => setCantidad((c) => Math.max(1, c - 1))}
-              className="w-9 h-9 rounded-full border-2 border-gray-200 flex items-center justify-center
-                         hover:border-brand-orange hover:text-brand-orange transition-colors"
+              className="w-10 h-10 rounded-full bg-white/50 backdrop-blur-sm border border-white/80 flex items-center justify-center
+                         hover:border-brand-orange hover:text-brand-orange hover:bg-white/80 hover:scale-105 active:scale-95 transition-all text-brand-brown"
+              aria-label="Disminuir cantidad"
             >
               <Minus size={16} />
             </button>
-            <span className="text-xl font-bold w-8 text-center">{cantidad}</span>
+            <span className="text-2xl font-black w-8 text-center text-brand-brown">{cantidad}</span>
             <button
               id="btn-sumar-cantidad"
               onClick={() => setCantidad((c) => c + 1)}
-              className="w-9 h-9 rounded-full border-2 border-gray-200 flex items-center justify-center
-                         hover:border-brand-orange hover:text-brand-orange transition-colors"
+              className="w-10 h-10 rounded-full bg-white/50 backdrop-blur-sm border border-white/80 flex items-center justify-center
+                         hover:border-brand-orange hover:text-brand-orange hover:bg-white/80 hover:scale-105 active:scale-95 transition-all text-brand-brown"
+              aria-label="Aumentar cantidad"
             >
               <Plus size={16} />
             </button>
@@ -114,8 +116,8 @@ export default function DetalleProducto() {
               id="btn-agregar-carrito"
               onClick={handleAgregar}
               disabled={agregado}
-              className={`btn-primary w-full justify-center text-base py-4 transition-all
-                ${agregado ? '!bg-green-500 !shadow-green-500/30' : ''}`}
+              className={`btn-primary w-full justify-center text-base py-4 font-bold transition-all duration-300
+                ${agregado ? '!bg-green-600 !shadow-green-600/35 border border-green-600' : ''}`}
             >
               {agregado ? (
                 <>
@@ -130,17 +132,17 @@ export default function DetalleProducto() {
                       <path
                         d="M4 10.5L8.5 15L16 7"
                         stroke="white"
-                        strokeWidth="2.2"
+                        strokeWidth="2.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
                     </svg>
                   </span>
-                  ¡Agregado!
+                  ¡Agregado al carrito!
                 </>
               ) : (
                 <>
-                  <ShoppingCart size={20} />
+                  <ShoppingCart size={18} />
                   Agregar al carrito
                 </>
               )}

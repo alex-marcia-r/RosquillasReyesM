@@ -33,33 +33,33 @@ export default function Noticias() {
   ];
 
   return (
-    <main className="pt-16 pb-16 bg-white min-h-screen">
-      <section className="bg-brand-brown min-h-[200px] flex items-center justify-center px-[10%] mb-12">
-        <h1 className="text-4xl md:text-5xl font-black text-brand-orange tracking-wider">
-          NOTICIAS
-        </h1>
+    <main className="pt-32 pb-20 px-[6%] md:px-[8%] relative z-10">
+     <section className=" min-h-[50px] flex items-center justify-center rounded-3xl mb-8  relative overflow-hidden">
+      <p className="text-brand-brown/70 font-bold text-sm md:text-base">
+            Historias, eventos y momentos especiales
+      </p>
       </section>
 
-      <section className="px-[10%]">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <section className="px-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {noticiasData.map(noticia => (
-            <div key={noticia.id} className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border border-gray-100 flex flex-col">
-              <a href={noticia.link || '#'} target="_blank" rel="noreferrer" className="block h-48 overflow-hidden">
+            <div key={noticia.id} className="glass-card rounded-3xl overflow-hidden border-white/60 flex flex-col card-hover">
+              <a href={noticia.link || '#'} target="_blank" rel="noreferrer" className="block h-48 overflow-hidden border-b border-white/30">
                 <img 
                   src={noticia.img} 
                   alt={noticia.titulo} 
-                  className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = 'https://placehold.co/400x300/D9C5A0/542B12?text=Noticia';
                   }}
                 />
               </a>
               <div className="p-6 flex flex-col flex-grow">
-                <h3 className="text-xl font-bold text-brand-brown mb-2 line-clamp-2">{noticia.titulo}</h3>
-                <span className="text-xs font-semibold text-brand-orange uppercase tracking-wider mb-4 block">
+                <h3 className="text-lg font-black text-brand-brown mb-2 line-clamp-2 leading-snug">{noticia.titulo}</h3>
+                <span className="text-xs font-black text-brand-orange uppercase tracking-wider mb-4 block">
                   {noticia.fecha}
                 </span>
-                <p className="text-gray-600 text-sm leading-relaxed flex-grow">
+                <p className="text-brand-navy/80 font-semibold text-sm leading-relaxed flex-grow">
                   {noticia.desc}
                 </p>
               </div>

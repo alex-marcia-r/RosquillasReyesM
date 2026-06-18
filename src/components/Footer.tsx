@@ -4,22 +4,22 @@ import { Phone, MapPin } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-white  pt-12 pb-6 px-[5%]">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-sm text-brand-navy mb-8">
+    <footer className="glass-card pt-16 pb-8 px-[8%] mt-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-sm text-brand-navy mb-12">
         {/* Marca */}
-        <div className="col-span-2 md:col-span-1">
-          <span className="text-2xl font-black text-brand-brown underline block mb-3">
+        <div className="sm:col-span-2 md:col-span-1">
+          <span className="text-2xl font-black text-brand-brown tracking-tight block mb-3">
             Rosquillas<span className="text-brand-orange">Reyes</span>
           </span>
-          <p className="text-gray-500 leading-relaxed">
+          <p className="text-brand-brown/70 leading-relaxed text-[13px] font-medium">
             Somos una empresa panificadora comprometida con ofrecer productos de la más alta calidad, liderando siempre las mejores tendencias del momento.
           </p>
         </div>
 
         {/* Links */}
         <div>
-          <h4 className="font-bold text-gray-800 mb-3">Navegación</h4>
-          <ul className="space-y-2 text-gray-500">
+          <h4 className="font-black text-brand-brown text-base mb-4">Navegación</h4>
+          <ul className="space-y-2.5 text-brand-brown/75 font-semibold">
             {['/', '/productos', '/nosotros', '/noticias', '/contacto', '/login'].map((path, i) => (
               <li key={path}>
                 <Link
@@ -35,8 +35,8 @@ export default function Footer() {
 
         {/* Productos */}
         <div>
-          <h4 className="font-bold text-gray-800 mb-3">Productos</h4>
-          <ul className="space-y-2 text-gray-500">
+          <h4 className="font-black text-brand-brown text-base mb-4">Productos</h4>
+          <ul className="space-y-2.5 text-brand-brown/75 font-semibold">
             {['Rosquillas', 'Hojaldras', 'Rosquetes', 'Cosas de Horno'].map((p) => (
               <li key={p}>
                 <Link
@@ -52,15 +52,15 @@ export default function Footer() {
 
         {/* Contacto y Horarios */}
         <div>
-          <h4 className="font-bold text-gray-800 mb-3">Contáctenos y Horarios</h4>
-          <ul className="space-y-3 text-gray-500 text-sm">
-            <li className="flex items-start gap-2">
+          <h4 className="font-black text-brand-brown text-base mb-4">Contáctenos</h4>
+          <ul className="space-y-3.5 text-brand-brown/75 font-semibold">
+            <li className="flex items-start gap-2 text-[13px]">
               <MapPin size={16} className="text-brand-orange flex-shrink-0 mt-0.5" />
-              <span>De la estación de policía 2 cuadras al Sur, El Viejo, Nicaragua</span>
+              <span>De la policía 2 cuadras al Sur, El Viejo, Nicaragua</span>
             </li>
-            <li className="flex items-center gap-2">
+            <li className="flex items-center gap-2 text-[13px]">
               <Phone size={16} className="text-brand-orange flex-shrink-0" />
-              <span>+505 8250 1265 <br /> +505 2344 0258</span>
+              <span>+505 8250 1265 | +505 2344 0258</span>
             </li>
             <li className="flex items-center gap-2">
               <svg className="w-4 h-4 text-brand-orange fill-current flex-shrink-0" viewBox="0 0 24 24">
@@ -75,17 +75,17 @@ export default function Footer() {
                 WhatsApp: +505 8175 9257
               </a>
             </li>
-            <li className="mt-4 pt-4 border-t border-gray-100">
-              <strong>LUNES A VIERNES:</strong> <br /> 6:00 A.M. - 9:00 P.M.
+            <li className="mt-4 pt-3 border-t border-white/40 text-[12px] text-brand-navy/80">
+              <strong className="text-brand-brown">LUNES A VIERNES:</strong> <br /> 6:00 A.M. - 9:00 P.M.
             </li>
-            <li>
-              <strong>DOMINGOS Y SÁBADOS:</strong> <br /> 7:00 A.M. - 9:00 P.M.
+            <li className="text-[12px] text-brand-navy/80">
+              <strong className="text-brand-brown">SÁBADOS Y DOMINGOS:</strong> <br /> 7:00 A.M. - 9:00 P.M.
             </li>
           </ul>
         </div>
       </div>
 
-      <div className="border-t border-gray-100 pt-4 text-center text-xs text-gray-400">
+      <div className="border-t border-white/40 pt-6 text-center text-xs font-semibold text-brand-brown/60">
         © {new Date().getFullYear()} Rosquilla Reyes — Todos los derechos reservados.
       </div>
     </footer>

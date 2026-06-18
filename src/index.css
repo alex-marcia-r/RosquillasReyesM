@@ -10,19 +10,96 @@
   }
   body {
     font-family: 'Inter', sans-serif;
-    @apply bg-gray-100 text-brand-brown;
+    @apply bg-[#FAF7F2] text-brand-navy selection:bg-brand-orange/20 overflow-x-hidden;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-6 py-3 bg-brand-orange text-white font-semibold rounded-full
-           transition-all duration-300 hover:bg-brand-brown hover:scale-105 shadow-lg shadow-brand-orange/30;
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-brand-orange text-white font-bold rounded-full
+           transition-all duration-300 hover:bg-brand-brown hover:scale-105 shadow-lg shadow-brand-orange/30
+           focus:outline-none focus:ring-4 focus:ring-brand-orange/30 active:scale-95;
   }
   .card-hover {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl;
+    @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-brown/10;
   }
   .nav-link {
-    @apply text-gray-700 font-semibold hover:text-brand-orange transition-colors duration-200;
+    @apply text-brand-brown/80 font-bold hover:text-brand-orange transition-colors duration-200;
   }
+
+  /* Liquid Glassmorphism Utilities */
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-xl shadow-brand-brown/5;
+  }
+
+  .glass-card-dark {
+    @apply bg-brand-dark/85 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/20;
+  }
+
+  .glass-input {
+    @apply bg-white/45 backdrop-blur-md border border-white/60 text-brand-brown font-medium placeholder-brand-brown/40
+           focus:bg-white/75 focus:border-brand-orange/60 focus:ring-2 focus:ring-brand-orange/20 focus:outline-none
+           transition-all duration-300 px-5 py-3.5 rounded-xl;
+  }
+
+  .glass-input-dark {
+    @apply bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-white/50
+           focus:bg-white/15 focus:border-brand-orange/60 focus:ring-2 focus:ring-brand-orange/30 focus:outline-none
+           transition-all duration-300 px-5 py-4 rounded-xl;
+  }
+}
+
+/* Animations for liquid blobs */
+@keyframes float-blob-1 {
+  0% {
+    transform: translate(0px, 0px) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate(50px, -80px) scale(1.1) rotate(120deg);
+  }
+  66% {
+    transform: translate(-30px, 30px) scale(0.9) rotate(240deg);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1) rotate(360deg);
+  }
+}
+
+@keyframes float-blob-2 {
+  0% {
+    transform: translate(0px, 0px) scale(1.1) rotate(360deg);
+  }
+  50% {
+    transform: translate(-60px, 60px) scale(0.85) rotate(180deg);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1.1) rotate(0deg);
+  }
+}
+
+@keyframes float-blob-3 {
+  0% {
+    transform: translate(0px, 0px) scale(0.9) rotate(0deg);
+  }
+  33% {
+    transform: translate(-40px, -50px) scale(1.05) rotate(90deg);
+  }
+  66% {
+    transform: translate(60px, 20px) scale(0.95) rotate(270deg);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(0.9) rotate(360deg);
+  }
+}
+
+.animate-liquid-1 {
+  animation: float-blob-1 25s infinite alternate ease-in-out;
+}
+
+.animate-liquid-2 {
+  animation: float-blob-2 30s infinite alternate ease-in-out;
+}
+
+.animate-liquid-3 {
+  animation: float-blob-3 22s infinite alternate ease-in-out;
 }

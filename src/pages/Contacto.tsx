@@ -95,7 +95,7 @@ export default function Contacto() {
               label: 'Chat de WhatsApp: +505 8175 9257',
               href: 'https://wa.me/50581759257'
             },
-            { icon: <ExternalLink size={20} />, label: 'Facebook: Rosquillas Reyes', href: '#' },
+            { icon: <ExternalLink size={20} />, label: 'Facebook: Rosquillas Reyes', href: 'https://www.facebook.com/RosquillasReyes1/' },
           ].map(({ icon, label, href }) => {
             const isClickable = !!href;
             const content = (

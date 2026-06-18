@@ -16,10 +16,10 @@ export default function Pago() {
   };
 
   return (
-    <main className="pt-32 pb-24 px-[5%] flex justify-center bg-gray-50 min-h-screen">
-      <div className="w-full max-w-xl bg-brand-dark rounded-3xl shadow-xl p-10 h-fit">
-        <h2 className="text-[2.5rem] font-bold text-white mb-6 text-center">
-          Detalles de Facturación
+    <main className="pt-32 pb-24 px-[6%] md:px-[8%] flex justify-center items-center min-h-screen relative z-10 animate-fade-in">
+      <div className="w-full max-w-xl glass-card-dark rounded-4xl p-10 shadow-2xl">
+        <h2 className="text-4xl font-black text-white mb-8 text-center tracking-tight">
+          Datos de Envío
         </h2>
         
         <form className="space-y-6" onSubmit={handleConfirmar}>
@@ -28,44 +28,44 @@ export default function Pago() {
               type="text" 
               placeholder="Nombre completo" 
               required 
-              className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/10 text-white placeholder-white/60 focus:border-brand-orange focus:ring-0 outline-none transition-all"
+              className="w-full glass-input-dark text-base"
             />
             <input 
               type="text" 
-              placeholder="Dirección de envío (Ej. Managua...)" 
+              placeholder="Dirección exacta de envío" 
               required 
-              className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/10 text-white placeholder-white/60 focus:border-brand-orange focus:ring-0 outline-none transition-all"
+              className="w-full glass-input-dark text-base"
             />
           </div>
           
-          <div className="pt-2">
-            <h3 className="text-lg font-semibold text-brand-orange mb-4">Datos de la Tarjeta</h3>
+          <div className="pt-4 border-t border-white/10">
+            <h3 className="text-lg font-black text-brand-orange mb-4 tracking-wide uppercase text-sm">Método de Pago</h3>
             <div className="space-y-4">
               <input 
                 type="text" 
-                placeholder="Número de Tarjeta" 
+                placeholder="Número de Tarjeta (16 dígitos)" 
                 required 
-                className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/10 text-white placeholder-white/60 focus:border-brand-orange focus:ring-0 outline-none transition-all"
+                className="w-full glass-input-dark text-base"
               />
               <div className="grid grid-cols-2 gap-4">
                 <input 
                   type="text" 
-                  placeholder="MM/AA" 
+                  placeholder="Vencimiento (MM/AA)" 
                   required 
-                  className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/10 text-white placeholder-white/60 focus:border-brand-orange focus:ring-0 outline-none transition-all"
+                  className="w-full glass-input-dark text-base"
                 />
                 <input 
                   type="text" 
-                  placeholder="CVC" 
+                  placeholder="Código CVC" 
                   required 
-                  className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/10 text-white placeholder-white/60 focus:border-brand-orange focus:ring-0 outline-none transition-all"
+                  className="w-full glass-input-dark text-base"
                 />
               </div>
             </div>
           </div>
           
-          <button type="submit" className="w-full btn-primary py-4 text-lg font-bold flex items-center justify-center gap-2 mt-4 hover:scale-[1.02] transition-transform">
-            Confirmar Pedido (C$ {totalAmount.toFixed(2)}) <Check size={20} />
+          <button type="submit" className="w-full btn-primary py-4 text-base font-bold flex items-center justify-center gap-2 mt-6">
+            Confirmar Compra (C$ {totalAmount.toFixed(2)}) <Check size={18} />
           </button>
         </form>
       </div>
