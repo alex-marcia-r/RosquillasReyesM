@@ -1,11 +1,14 @@
 // src/pages/Contacto.tsx
 import { useRef, useState } from 'react';
-import { MapPin, Phone, ExternalLink, Send } from 'lucide-react';
+import { MapPin, Phone, ExternalLink, Send, Loader2 } from 'lucide-react';
 import { useInputShake } from '../hooks/useInputShake';
+import emailjs from '@emailjs/browser';
 
 export default function Contacto() {
   const [form, setForm] = useState({ nombre: '', email: '', mensaje: '' });
   const [enviado, setEnviado] = useState(false);
+  const [enviando, setEnviando] = useState(false);
+  const [errorEnvio, setErrorEnvio] = useState(false);
 
   // Shake por cada campo
   const nombreShake  = useInputShake();
@@ -24,7 +27,7 @@ export default function Contacto() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Regex para validar el formato de correo electrónico
@@ -37,17 +40,32 @@ export default function Contacto() {
     if (!form.mensaje.trim()) { mensajeShake.trigger(); hasError = true; }
     if (hasError) return;
 
-    // Crear mensaje pre-llenado para WhatsApp
-    const mensajeWhatsApp = `¡Hola, Rosquillas Reyes! 🥖\n\nMe gustaría ponerme en contacto con ustedes:\n\n👤 *Nombre:* ${form.nombre}\n📧 *Correo:* ${form.email}\n💬 *Mensaje:* ${form.mensaje}`;
-    const url = `https://wa.me/50581759257?text=${encodeURIComponent(mensajeWhatsApp)}`;
+    setEnviando(true);
+    setErrorEnvio(false);
 
-    // Abrir chat de WhatsApp
-    window.open(url, '_blank');
+    try {
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        {
+          nombre:   form.nombre,
+          email:    form.email,
+          mensaje:  form.mensaje,
+        },
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
 
-    setForm({ nombre: '', email: '', mensaje: '' });
-    setEnviado(true);
-    triggerCheck();
-    setTimeout(() => setEnviado(false), 4000);
+      setForm({ nombre: '', email: '', mensaje: '' });
+      setEnviado(true);
+      triggerCheck();
+      setTimeout(() => setEnviado(false), 5000);
+    } catch (err) {
+      console.error('EmailJS error:', err);
+      setErrorEnvio(true);
+      setTimeout(() => setErrorEnvio(false), 5000);
+    } finally {
+      setEnviando(false);
+    }
   };
 
   return (
@@ -134,7 +152,19 @@ export default function Contacto() {
                   />
                 </svg>
               </span>
-              ¡Mensaje enviado a WhatsApp! Nos comunicaremos pronto.
+              ¡Mensaje enviado! Te responderemos a tu correo pronto.
+            </div>
+          )}
+
+          {/* Feedback de error */}
+          {errorEnvio && (
+            <div className="bg-red-50 text-red-600 text-sm font-semibold px-4 py-3 rounded-xl flex items-center gap-3">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <circle cx="10" cy="10" r="9" stroke="#dc2626" strokeWidth="2"/>
+                <path d="M10 5.5V11" stroke="#dc2626" strokeWidth="2.2" strokeLinecap="round"/>
+                <circle cx="10" cy="14" r="1" fill="#dc2626"/>
+              </svg>
+              Ocurrió un error al enviar. Por favor intenta de nuevo.
             </div>
           )}
 
@@ -237,10 +267,61 @@ export default function Contacto() {
             </div>
           </div>
 
-          <button id="btn-enviar-contacto" type="submit" className="btn-primary w-full justify-center">
-            <Send size={16} /> Enviar mensaje
+          <button
+            id="btn-enviar-contacto"
+            type="submit"
+            disabled={enviando}
+            className="btn-primary w-full justify-center disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {enviando
+              ? <><Loader2 size={16} className="animate-spin" /> Enviando...</>
+              : <><Send size={16} /> Enviar mensaje</>
+            }
           </button>
         </form>
+      </div>
+
+      {/* ── Mapa de ubicación ── */}
+      <div className="max-w-4xl mx-auto mt-14">
+        {/* Header del mapa */}
+        <div className="flex items-center gap-3 mb-5">
+          <div className="w-10 h-10 rounded-full bg-brand-orange/10 text-brand-orange flex items-center justify-center flex-shrink-0">
+            <MapPin size={20} />
+          </div>
+          <div>
+            <h2 className="font-bold text-xl text-brand-brown leading-tight">Nuestra Ubicación</h2>
+            <p className="text-xs text-gray-500">El Viejo, Chinandega, Nicaragua</p>
+          </div>
+          <a
+            href="https://www.google.com/maps/dir/?api=1&destination=12.66005126835724,-87.16717801004384"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-auto btn-primary text-sm py-2 px-4 flex items-center gap-2"
+            id="btn-como-llegar"
+          >
+            <MapPin size={14} />
+            Cómo llegar
+          </a>
+        </div>
+
+        {/* Iframe del mapa */}
+        <div className="rounded-3xl overflow-hidden shadow-md border border-gray-100" style={{ height: '420px' }}>
+          <iframe
+            title="Ubicación Rosquillas Reyes - El Viejo, Chinandega"
+            src="https://maps.google.com/maps?q=12.66005126835724,-87.16717801004384&z=17&output=embed"
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
+
+        {/* Nota de dirección */}
+        <p className="text-center text-xs text-gray-400 mt-3">
+          📍 Rosquillas Reyes · El Viejo, Chinandega, Nicaragua · Tel: +505 2344-0258
+        </p>
       </div>
     </main>
   );
