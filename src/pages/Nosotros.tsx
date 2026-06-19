@@ -1,13 +1,16 @@
 // src/pages/Nosotros.tsx
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 export default function Nosotros() {
+  const revealRef = useScrollReveal();
+
   return (
-    <main className="relative z-10 pb-16">
+    <main ref={revealRef} className="relative z-10 pb-16">
       {/* Hero Nosotros */}
       <section className="pt-32 pb-12 px-[6%] md:px-[8%]">
-        <div className="w-full glass-card border-white/60 rounded-4xl grid md:grid-cols-2 gap-10 items-center p-8 md:p-14 shadow-2xl">
+        <div className="w-full glass-card border-white/60 rounded-4xl grid md:grid-cols-2 gap-10 items-center p-8 md:p-14 shadow-2xl reveal">
           <div>
             <p className="text-xs font-black tracking-widest text-brand-orange uppercase mb-3">
               SOBRE NOSOTROS
@@ -38,34 +41,34 @@ export default function Nosotros() {
 
       {/* Historia */}
       <section className="py-16 px-[6%] md:px-[8%]">
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 reveal">
           <p className="text-brand-orange font-black uppercase tracking-widest text-xs mb-2">CONOCE MÁS</p>
           <h2 className="text-3xl md:text-4xl font-black text-brand-brown">Nuestra Historia</h2>
         </div>
         
         <div className="max-w-4xl mx-auto space-y-8 leading-relaxed">
-          <div className="glass-card p-8 rounded-3xl border-l-4 border-l-brand-orange border border-white/50 shadow-lg hover:shadow-xl hover:bg-white/80 transition-all duration-300">
+          <div className="glass-card p-8 rounded-3xl border border-white/50 shadow-lg hover:shadow-xl hover:bg-white/80 transition-all duration-300 reveal">
             <h3 className="text-xl font-black text-brand-brown mb-3">La Identidad Gastronómica</h3>
             <p className="text-brand-navy/80 font-semibold text-sm md:text-base">
               La historia de Rosquillas Reyes se entrelaza con la identidad gastronómica de Nicaragua, siendo un emblema de la continuidad cultural y esfuerzo familiar. Fundada en 1875 por Maria Claudina Reyes, esta empresa ha trascendido generaciones, consolidándose como una de las tres rosquillas emblemáticas del país, junto a las de Somoto y Rivas.
             </p>
           </div>
           
-          <div className="glass-card p-8 rounded-3xl border-l-4 border-l-brand-orange border border-white/50 shadow-lg hover:shadow-xl hover:bg-white/80 transition-all duration-300">
+          <div className="glass-card p-8 rounded-3xl border border-white/50 shadow-lg hover:shadow-xl hover:bg-white/80 transition-all duration-300 reveal">
             <h3 className="text-xl font-black text-brand-brown mb-3">Orígenes y evolución</h3>
             <p className="text-brand-navy/80 font-semibold text-sm md:text-base">
               El negocio nació como un emprendimiento modesto, donde María Claudina Reyes y sus hermanas vendían rosquillas en las calles de El Viejo, especialmente en fechas festivas. La técnica de elaboración transmitida oralmente, se basaba en un horneado tradicional que garantiza una textura crujiente y porosa, rasgo distintivo que perdura hasta hoy. Con el paso del tiempo, la familia expandió su producción, incorporando productos como hojaldras, rosquetes y bocadillos, sin perder la esencia artesanal.
             </p>
           </div>
 
-          <div className="glass-card p-8 rounded-3xl border-l-4 border-l-brand-orange border border-white/50 shadow-lg hover:shadow-xl hover:bg-white/80 transition-all duration-300">
+          <div className="glass-card p-8 rounded-3xl border border-white/50 shadow-lg hover:shadow-xl hover:bg-white/80 transition-all duration-300 reveal">
             <h3 className="text-xl font-black text-brand-brown mb-3">Impacto cultural y económico</h3>
             <p className="text-brand-navy/80 font-semibold text-sm md:text-base">
               Rosquillas Reyes forma parte de la "trinidad de rosquillas" nicaragüense. Su éxito radica en la consistencia de su proceso, que incluye el uso de utensilios y técnicas heredadas, como el horneado en hornos de barro o leña. Además, el negocio se convierte en un motor económico local, especialmente en temporadas como Semana Santa y Diciembre.
             </p>
           </div>
 
-          <div className="glass-card bg-brand-cream/30 border border-white/50 p-8 rounded-4xl mt-12 shadow-xl">
+          <div className="glass-card bg-brand-cream/30 border border-white/50 p-8 rounded-4xl mt-12 shadow-xl reveal">
             <h3 className="text-2xl font-black text-brand-brown mb-4">La quinta generación: Tamara Teresa Tercero Reyes</h3>
             <p className="text-brand-navy/95 font-semibold text-sm md:text-base leading-relaxed">
               Actualmente, Tamara Teresa Tercero Reyes lidera el taller, preservando métodos que datan de su bisabuela. Bajo su dirección, la empresa mantiene una producción diaria de 150 cazuelas de rosquillas, 210 hojaldras y otros productos, comercializados en Nicaragua y Centroamérica. Su participación en eventos como ExpoPyme (2019) y reconocimientos por calidad reflejan la adaptación a nuevos mercados sin sacrificar la autenticidad.
@@ -75,7 +78,7 @@ export default function Nosotros() {
       </section>
 
       {/* Misión y Visión */}
-      <section className="mx-[6%] md:mx-[8%] py-20 px-8 md:px-16 bg-brand-dark/95 text-white rounded-4xl border border-white/10 shadow-2xl relative overflow-hidden">
+      <section className="mx-[6%] md:mx-[8%] py-20 px-8 md:px-16 bg-brand-dark/95 text-white rounded-4xl border border-white/10 shadow-2xl relative overflow-hidden reveal">
         {/* Soft decorative background blob inside the dark card */}
         <div className="absolute top-[-30%] right-[-30%] w-[60%] h-[60%] rounded-full bg-brand-orange/15 blur-[80px] pointer-events-none" />
 
@@ -122,7 +125,7 @@ export default function Nosotros() {
       </section>
 
       {/* Mensaje Final */}
-      <section className="mt-16 mx-[6%] md:mx-[8%] py-12 px-6 glass-card rounded-3xl border-white/60 shadow-xl">
+      <section className="mt-16 mx-[6%] md:mx-[8%] py-12 px-6 glass-card rounded-3xl border-white/60 shadow-xl reveal">
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-lg md:text-xl font-bold text-brand-brown leading-relaxed">
             Rosquillas Reyes es un negocio creado en 1875 donde podrás encontrar las tradiciones y mejores Rosquillas, Hojaldras, Rosquetes, Cosas de horno y la especialidad de la casa: Las Pupusas tostadas. Visítanos en El Viejo, Chinandega.

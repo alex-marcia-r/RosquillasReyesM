@@ -3,10 +3,12 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { ShoppingCart, Menu, X, User } from 'lucide-react';
 import { useCarrito } from '../store/carritoStore';
+import { useAuth } from '../store/authStore';
 
 export default function Navbar() {
   const [sticky, setSticky] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { currentUser } = useAuth();
 
   const cantidadTotal = useCarrito((s) => s.cantidadTotal());
   const prevCantidad  = useRef(cantidadTotal);
@@ -109,13 +111,19 @@ export default function Navbar() {
           )}
         </Link>
 
-        {/* Login icon */}
+        {/* Login icon / Profile icon */}
         <Link
-          to="/login"
-          className="text-brand-brown hover:text-brand-orange hover:bg-white/40 rounded-full p-2 transition-all hidden sm:inline-flex"
-          aria-label="Iniciar sesión"
+          to={currentUser ? '/perfil' : '/login'}
+          className={`hover:bg-white/40 rounded-full p-2 transition-all hidden sm:inline-flex items-center gap-1.5
+            ${currentUser ? 'text-brand-orange' : 'text-brand-brown hover:text-brand-orange'}`}
+          aria-label={currentUser ? 'Ver perfil' : 'Iniciar sesión'}
         >
           <User size={20} className="w-5 h-5" />
+          {currentUser && (
+            <span className="text-xs font-black truncate max-w-[80px]">
+              {currentUser.nombre.split(' ')[0]}
+            </span>
+          )}
         </Link>
 
         {/* Hamburger */}
@@ -158,14 +166,25 @@ export default function Navbar() {
               </NavLink>
             ))}
             
-            <Link
-              to="/login"
-              onClick={() => setMenuOpen(false)}
-              className="mt-4 px-6 py-4 text-base font-bold rounded-2xl transition-all duration-200 text-brand-brown/85 hover:bg-brand-orange/5 hover:text-brand-orange flex items-center gap-3 border-t border-brand-brown/10 pt-4"
-            >
-              <User size={20} />
-              Iniciar sesión
-            </Link>
+            {currentUser ? (
+              <Link
+                to="/perfil"
+                onClick={() => setMenuOpen(false)}
+                className="mt-4 px-6 py-4 text-base font-bold rounded-2xl transition-all duration-200 text-brand-orange bg-brand-orange/5 hover:bg-brand-orange/10 flex items-center gap-3 border-t border-brand-brown/10 pt-4"
+              >
+                <User size={20} />
+                Mi Perfil ({currentUser.nombre.split(' ')[0]})
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                onClick={() => setMenuOpen(false)}
+                className="mt-4 px-6 py-4 text-base font-bold rounded-2xl transition-all duration-200 text-brand-brown/85 hover:bg-brand-orange/5 hover:text-brand-orange flex items-center gap-3 border-t border-brand-brown/10 pt-4"
+              >
+                <User size={20} />
+                Iniciar sesión
+              </Link>
+            )}
           </div>
         </>
       )}

@@ -1,6 +1,7 @@
 // src/pages/Home.tsx
 import { Link } from 'react-router-dom';
 import { ArrowRight, Star, Leaf, Flame } from 'lucide-react';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 const carouselSlides = [
   {
@@ -44,12 +45,13 @@ const features = [
 import { useState, useEffect } from 'react';
 
 export default function Home() {
+  const revealRef = useScrollReveal();
   const [bgSlideIdx, setBgSlideIdx] = useState(0);
   const [gallerySlideIdx, setGallerySlideIdx] = useState(0);
 
   useEffect(() => {
     const totalBgImages = heroBackgrounds.length;
-    const id = setInterval(() => setBgSlideIdx((i) => (i + 1) % totalBgImages), 4000);
+    const id = setInterval(() => setBgSlideIdx((i) => (i + 1) % totalBgImages), 5000);
     return () => clearInterval(id);
   }, []);
 
@@ -60,7 +62,15 @@ export default function Home() {
   }, []);
 
   return (
-    <main>
+    <main ref={revealRef} className="relative z-10">
+      {/* Glassmorphism ambient glows */}
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        {/* Glow muy fuerte en la izquierda */}
+        <div className="absolute top-1/3 left-[-15%] w-[650px] h-[650px] rounded-full bg-brand-orange/35 blur-[120px]" />
+        <div className="absolute top-[60%] right-[-10%] w-[600px] h-[600px] rounded-full bg-brand-orange/30 blur-[110px]" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[700px] rounded-full bg-brand-orange/20 blur-[140px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-brand-brown/25 blur-[120px]" />
+      </div>
 {/* ── Hero ── */}
 <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
   {/* Full-Bleed Background Container con imágenes en transición */}
@@ -69,14 +79,16 @@ export default function Home() {
     {heroBackgrounds.map((img, index) => (
       <div
         key={index}
-        className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+        className={`absolute inset-0 transition-opacity duration-[1500ms] ease-in-out ${
           index === bgSlideIdx ? 'opacity-100' : 'opacity-0'
         }`}
       >
         <img 
           src={img}
           alt={`Productos Rosquilla Reyes ${index + 1}`}
-          className="ken-burns-bg w-full h-full object-cover blur-[4px] brightness-[0.85]"
+          className={`w-full h-full object-cover blur-[3px] brightness-[0.9] transition-transform duration-[5000ms] ease-out ${
+            index === bgSlideIdx ? 'scale-110' : 'scale-100'
+          }`}
           onError={(e) => {
             (e.target as HTMLImageElement).src = 
               'https://placehold.co/1920x1080/D9C5A0/542B12?text=Rosquilla+Reyes';
@@ -85,11 +97,17 @@ export default function Home() {
       </div>
     ))}
     
-    {/* Dark/Glassy Overlay - MÁS OSCURO para más contraste */}
-    <div className="absolute inset-0 bg-black/50 z-10 backdrop-blur-[2px]"></div>
+    {/* Dark/Glassy Overlay - Muy ligero para mayor luminosidad */}
+    <div className="absolute inset-0 bg-black/20 z-10 backdrop-blur-[1px]"></div>
     
-    {/* Gradiente overlay - MÁS CONTRASTE */}
-    <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60 z-20"></div>
+    {/* Gradiente overlay - Muy suave */}
+    <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-transparent to-black/35 z-20"></div>
+
+    {/* Ambient glassmorphism glows on top of background image (highly prominent on the left) */}
+    <div className="pointer-events-none absolute inset-0 z-25 overflow-hidden">
+      <div className="absolute top-[10%] left-[-20%] w-[650px] h-[650px] rounded-full bg-brand-orange/55 blur-[90px]" />
+      <div className="absolute bottom-1/4 right-[-15%] w-[550px] h-[550px] rounded-full bg-brand-brown/30 blur-[100px]" />
+    </div>
   </div>
 
   {/* Centered Content */}
@@ -97,13 +115,13 @@ export default function Home() {
     <div className="space-y-10">
 
       {/* Título - BLANCO PURO para máximo contraste */}
-      <h1 className="font-display-lg text-display-lg-mobile md:text-[64px] text-white max-w-4xl mx-auto leading-tight drop-shadow-2xl">
+      <h1 className="font-black text-5xl md:text-[64px] text-white max-w-4xl mx-auto leading-tight drop-shadow-2xl">
         Sabor que hace <span className="text-brand-orange drop-shadow-[0_0_20px_rgba(217,145,68,0.3)]">historia.</span>
         <br /> Tradición que se <span className="text-brand-orange drop-shadow-[0_0_20px_rgba(217,145,68,0.3)]">comparte.</span>
       </h1>
 
       {/* Descripción - BLANCO MÁS BRILLANTE */}
-      <p className="font-body-lg text-body-lg text-white max-w-2xl mx-auto font-medium drop-shadow-lg">
+      <p className="text-base md:text-lg text-white max-w-2xl mx-auto font-medium drop-shadow-lg">
         Descubre el equilibrio perfecto entre la masa fermentada lentamente y nuestros glaseados orgánicos inspirados en la naturaleza.
       </p>
 
@@ -111,13 +129,13 @@ export default function Home() {
       <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-6">
         <Link 
           to="/productos" 
-          className="w-full sm:w-auto bg-brand-orange text-white font-label-md text-label-md uppercase tracking-widest px-12 py-5 rounded-full shadow-2xl shadow-brand-orange/50 hover:bg-brand-orange/80 hover:scale-105 transition-all text-center font-bold"
+          className="w-full sm:w-auto bg-brand-orange text-white text-sm uppercase tracking-widest px-12 py-5 rounded-full shadow-2xl shadow-brand-orange/50 hover:bg-brand-orange/80 hover:scale-105 transition-all text-center font-bold"
         >
           Ver productos <ArrowRight size={18} className="inline ml-2" />
         </Link>
         <Link 
           to="/nosotros" 
-          className="w-full sm:w-auto font-label-md text-label-md uppercase tracking-widest px-12 py-5 rounded-full border-2 border-white bg-white/10 backdrop-blur-md hover:bg-white/20 transition-all text-white font-bold text-center"
+          className="w-full sm:w-auto text-sm uppercase tracking-widest px-12 py-5 rounded-full border-2 border-white bg-white/10 backdrop-blur-md hover:bg-white/20 transition-all text-white font-bold text-center"
         >
           Nuestra Historia
         </Link>
@@ -130,43 +148,6 @@ export default function Home() {
     <span className="material-symbols-outlined text-4xl">↓</span>
   </div>
 </section>
-      {/* ── Categorías ── */}
-      <section className="py-24 px-[8%] relative z-10">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-black text-brand-brown mb-3">
-            Tipos de Rosquillas y Antojos
-          </h2>
-          <p className="text-brand-navy/60 font-semibold text-sm max-w-md mx-auto">
-            Explora nuestra variedad artesanal horneada con recetas tradicionales y sabor inigualable.
-          </p>
-        </div>
-        <div className="flex flex-wrap justify-center gap-8 md:gap-12">
-          {categorias.map((cat) => (
-            <Link
-              key={cat.nombre}
-              to="/productos"
-              id={`cat-${cat.nombre.toLowerCase().replace(/\s/g, '-')}`}
-              className="flex flex-col items-center gap-3 group"
-            >
-              <div className="w-24 h-24 rounded-full glass-card border-white/60 flex items-center justify-center
-                              transition-all duration-300 group-hover:border-brand-orange/60 group-hover:scale-110 shadow-lg shadow-brand-brown/5">
-                <img
-                  src={cat.img}
-                  alt={cat.nombre}
-                  className="w-14 h-14 object-contain transition-transform duration-300 group-hover:rotate-12"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
-                />
-              </div>
-              <span className="text-xs md:text-sm font-black text-brand-brown/85 group-hover:text-brand-orange transition-colors">
-                {cat.nombre}
-              </span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
       {/* ── Carrusel Rediseñado (Nuestra Galería) ── */}
       <section className="relative w-full min-h-[550px] md:h-[650px] flex items-center justify-center overflow-hidden bg-brand-dark/95 py-12">
         {/* Fondo con imagen opaca y desenfocada */}
@@ -186,7 +167,7 @@ export default function Home() {
         <div className="relative z-10 w-full max-w-6xl mx-auto px-8 flex flex-col md:flex-row items-center justify-between gap-12">
 
           {/* Texto a la izquierda */}
-          <div className="md:w-1/2 text-center md:text-left">
+          <div className="md:w-1/2 text-center md:text-left reveal">
             <h2 className="text-5xl md:text-7xl font-black mb-6 drop-shadow-2xl text-white">
               Nuestra <span className="text-brand-orange">Galería</span>
             </h2>
@@ -204,7 +185,7 @@ export default function Home() {
           </div>
 
           {/* Carrusel 3D (Efecto Coverflow) */}
-          <div className="md:w-1/2 flex justify-center perspective-[1200px] h-[400px] items-center relative">
+          <div className="md:w-1/2 flex justify-center perspective-[1200px] h-[400px] items-center relative reveal reveal-delay-2">
             <div className="relative w-full max-w-[400px] h-full flex items-center justify-center transform-style-3d">
               {carouselSlides.map((slide, i) => {
                 // Lógica para el efecto carrusel infinito (Coverflow)
@@ -283,11 +264,48 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── Categorías ── */}
+      <section className="py-24 px-[8%] relative z-10">
+        <div className="text-center mb-12 reveal">
+          <h2 className="text-3xl md:text-4xl font-black text-brand-brown mb-3">
+            Tipos de Rosquillas y Antojos
+          </h2>
+          <p className="text-brand-navy/60 font-semibold text-sm max-w-md mx-auto">
+            Explora nuestra variedad artesanal horneada con recetas tradicionales y sabor inigualable.
+          </p>
+        </div>
+        <div className="flex flex-wrap justify-center gap-8 md:gap-12 reveal reveal-delay-1">
+          {categorias.map((cat) => (
+            <Link
+              key={cat.nombre}
+              to="/productos"
+              id={`cat-${cat.nombre.toLowerCase().replace(/\s/g, '-')}`}
+              className="flex flex-col items-center gap-3 group"
+            >
+              <div className="w-24 h-24 rounded-full glass-card border-white/60 flex items-center justify-center
+                              transition-all duration-300 group-hover:border-brand-orange/60 group-hover:scale-110 shadow-lg shadow-brand-brown/5">
+                <img
+                  src={cat.img}
+                  alt={cat.nombre}
+                  className="w-14 h-14 object-contain transition-transform duration-300 group-hover:rotate-12"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+              </div>
+              <span className="text-xs md:text-sm font-black text-brand-brown/85 group-hover:text-brand-orange transition-colors">
+                {cat.nombre}
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       {/* ── Features ── */}
       <section className="py-24 px-[8%] relative z-10">
         <div className="grid md:grid-cols-3 gap-8">
-          {features.map((f) => (
-            <div key={f.title} className="flex flex-col items-center text-center p-8 rounded-3xl glass-card border-white/60 hover:bg-white/80 card-hover">
+          {features.map((f, idx) => (
+            <div key={f.title} className={`flex flex-col items-center text-center p-8 rounded-3xl glass-card border-white/60 hover:bg-white/80 card-hover reveal reveal-delay-${idx + 1}`}>
               <div className="w-14 h-14 rounded-2xl bg-brand-orange/15 text-brand-orange
                               flex items-center justify-center mb-6 shadow-inner">
                 {f.icon}

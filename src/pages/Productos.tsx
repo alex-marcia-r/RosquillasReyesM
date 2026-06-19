@@ -1,8 +1,10 @@
 // src/pages/Productos.tsx
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { productos, Categoria } from '../data/productos';
 import ProductoCard from '../components/ProductoCard';
 import { Search } from 'lucide-react';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 const FILTROS: { label: string; value: Categoria | 'todos' }[] = [
   { label: 'Todos',    value: 'todos'    },
@@ -11,6 +13,7 @@ const FILTROS: { label: string; value: Categoria | 'todos' }[] = [
 ];
 
 export default function Productos() {
+  const revealRef = useScrollReveal();
   const [filtro, setFiltro] = useState<Categoria | 'todos'>('todos');
   const [busqueda, setBusqueda] = useState('');
 
@@ -21,23 +24,23 @@ export default function Productos() {
   });
 
   return (
-    <main className="pt-32 pb-20 px-[6%] md:px-[8%] relative z-10">
+    <main ref={revealRef} className="pt-32 pb-20 px-[6%] md:px-[8%] relative z-10">
       {/* Hero */}
-      <div className="text-center mb-12">
+      <div className="text-center mb-12 reveal">
         <h1 className="text-4xl md:text-5xl font-black text-brand-brown mb-3 tracking-tight">
           Explora nuestro <span className="text-brand-orange">catálogo</span>
         </h1>
         <p className="text-brand-navy/70 font-semibold max-w-lg mx-auto text-sm md:text-base leading-relaxed">
           Si deseas productos para eventos especiales,{' '}
-          <a href="/contacto" className="text-brand-orange font-bold hover:underline transition-colors">
+          <Link to="/contacto" className="text-brand-orange font-bold hover:underline transition-colors">
             contáctanos directamente
-          </a>
+          </Link>
           .
         </p>
       </div>
 
       {/* Buscador + Filtros */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-12">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-12 reveal reveal-delay-1">
         {/* Buscador - Versión CORREGIDA */}
         <div className="relative w-full md:max-w-md">
           {/* Icono - Ahora con z-index alto y posicionamiento correcto */}
@@ -78,13 +81,13 @@ export default function Productos() {
 
       {/* Grilla */}
       {filtrados.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 reveal reveal-delay-2">
           {filtrados.map((p) => (
             <ProductoCard key={p.id} producto={p} />
           ))}
         </div>
       ) : (
-        <div className="glass-card rounded-3xl p-16 text-center border-white/60">
+        <div className="glass-card rounded-3xl p-16 text-center border-white/60 reveal">
           <p className="text-brand-brown/60 font-bold text-lg">No se encontraron productos en esta categoría.</p>
         </div>
       )}

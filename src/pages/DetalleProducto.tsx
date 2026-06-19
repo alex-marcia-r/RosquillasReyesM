@@ -13,6 +13,7 @@ export default function DetalleProducto() {
   const producto = getProductoById(id ?? '');
   const [cantidad, setCantidad] = useState(1);
   const [agregado, setAgregado] = useState(false);
+  const [opcion, setOpcion] = useState<string>('unidad');
 
   // SuccessCheck ref + estado
   const checkRef = useRef<HTMLSpanElement>(null);
@@ -29,8 +30,42 @@ export default function DetalleProducto() {
     );
   }
 
+  const supportsPackages = producto.id === 'rosquillas' || producto.id === 'cosasdehorno';
+
+  const getOpciones = () => {
+    if (producto.id === 'rosquillas') {
+      return ['unidad', '50', '100', '200', '300', '400', '500'];
+    }
+    if (producto.id === 'cosasdehorno') {
+      return ['unidad', '5', '10', '20'];
+    }
+    return ['unidad'];
+  };
+
+  const opciones = getOpciones();
+
+  const getPrecioDeOpcion = (opt: string): number => {
+    if (producto.id === 'pupusas') return 15;
+    if (producto.id === 'hojaldras') return 20; // 3 por C$ 20
+
+    const base = producto.id === 'rosquillas' ? 2 : (producto.id === 'rosquetes' ? 2 : 15);
+    if (opt === 'unidad') return base;
+    return base * parseInt(opt, 10);
+  };
+
+  const getLabelDeOpcion = (opt: string): string => {
+    if (opt === 'unidad') return 'Unidad';
+    if (producto.id === 'cosasdehorno') {
+      return `Bandeja de ${opt}`;
+    }
+    return opt; // just the number
+  };
+
+  const priceOfSelectedOption = getPrecioDeOpcion(opcion);
+
   const handleAgregar = () => {
-    agregar(producto, cantidad);
+    const paqueteSelected = opcion === 'unidad' ? undefined : parseInt(opcion, 10);
+    agregar(producto, cantidad, paqueteSelected, priceOfSelectedOption);
 
     // Trigger success check
     setCheckState('out');
@@ -83,9 +118,39 @@ export default function DetalleProducto() {
           <p className="text-brand-navy/80 text-sm md:text-base font-semibold leading-relaxed mb-6">{producto.desc}</p>
 
           <div className="text-4xl font-black text-brand-orange mb-4">
-            C$ {producto.precio}
-            <span className="text-base font-bold text-brand-brown/60 ml-2">/ {producto.unidad}</span>
+            C$ {priceOfSelectedOption}
+            <span className="text-base font-bold text-brand-brown/60 ml-2">
+              / {opcion === 'unidad' ? producto.unidad : (producto.id === 'cosasdehorno' ? `Bandeja de ${opcion}` : `Paquete de ${opcion}`)}
+            </span>
           </div>
+
+          {/* Opciones de Presentación / Paquetes */}
+          {supportsPackages && (
+            <div className="mb-6">
+              <label className="block text-xs font-black tracking-wider uppercase text-brand-brown/70 mb-2">
+                Selecciona la Presentación
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {opciones.map((opt) => {
+                  const price = getPrecioDeOpcion(opt);
+                  const isSelected = opcion === opt;
+                  return (
+                    <button
+                      key={opt}
+                      onClick={() => setOpcion(opt)}
+                      className={`py-3 px-3.5 rounded-xl border text-xs font-bold text-center transition-all duration-300 min-w-[70px]
+                        ${isSelected
+                          ? 'bg-brand-orange border-brand-orange text-white shadow-md shadow-brand-orange/20 scale-102 font-black'
+                          : 'bg-white/40 border-white/80 text-brand-brown hover:bg-white/70 hover:border-brand-orange/40'}`}
+                    >
+                      <div>{getLabelDeOpcion(opt)}</div>
+                      <div className={isSelected ? 'text-white/85 text-[10px]' : 'text-brand-brown/60 font-semibold text-[10px]'}>C$ {price}</div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           {/* Cantidad */}
           <div className="flex items-center gap-4 my-6">

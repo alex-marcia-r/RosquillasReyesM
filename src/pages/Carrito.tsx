@@ -52,12 +52,15 @@ export default function Carrito() {
       <div className="grid lg:grid-cols-3 gap-8 items-start">
         {/* Lista */}
         <div className="lg:col-span-2 space-y-4">
-          {items.map(({ producto, cantidad }) => {
-            const subtotal = producto.precio * cantidad;
+          {items.map(({ producto, cantidad, paqueteSelected, precioUnitario }) => {
+            const safePrecio = isNaN(precioUnitario) ? 0 : precioUnitario;
+            const subtotal = safePrecio * cantidad;
+            const itemKey = `${producto.id}-${paqueteSelected ?? 'unidad'}`;
+
             return (
               <div
-                key={producto.id}
-                id={`carrito-item-${producto.id}`}
+                key={itemKey}
+                id={`carrito-item-${itemKey}`}
                 className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 glass-card rounded-3xl p-5 border-white/50"
               >
                 {/* Info Izquierda: Imagen + Detalles */}
@@ -72,8 +75,15 @@ export default function Carrito() {
                     }}
                   />
                   <div className="min-w-0">
-                    <h3 className="font-black text-brand-brown text-base sm:text-lg truncate">{producto.titulo}</h3>
-                    <p className="text-brand-orange font-black">C$ {producto.precio}</p>
+                    <h3 className="font-black text-brand-brown text-base sm:text-lg truncate">
+                      {producto.titulo}
+                    </h3>
+                    <p className="text-xs text-brand-brown/65 font-bold mb-1">
+                      Presentación: {paqueteSelected ? (producto.id === 'cosasdehorno' ? `Bandeja de ${paqueteSelected}` : `Paquete de ${paqueteSelected}`) : 'Unidad'}
+                    </p>
+                    <p className="text-brand-orange font-black">
+                      C$ {safePrecio}
+                    </p>
                   </div>
                 </div>
 
@@ -82,8 +92,8 @@ export default function Carrito() {
                   {/* Cantidad */}
                   <div className="flex items-center gap-2">
                     <button
-                      id={`btn-restar-${producto.id}`}
-                      onClick={() => actualizar(producto.id, cantidad - 1)}
+                      id={`btn-restar-${itemKey}`}
+                      onClick={() => actualizar(producto.id, paqueteSelected, cantidad - 1)}
                       className="w-8 h-8 rounded-full bg-white/50 border border-white/80 flex items-center justify-center
                                  hover:border-brand-orange hover:text-brand-orange hover:bg-white/80 active:scale-90 transition-all text-brand-brown"
                       aria-label="Restar uno"
@@ -92,8 +102,8 @@ export default function Carrito() {
                     </button>
                     <span className="w-6 text-center font-black text-brand-brown text-sm">{cantidad}</span>
                     <button
-                      id={`btn-sumar-${producto.id}`}
-                      onClick={() => actualizar(producto.id, cantidad + 1)}
+                      id={`btn-sumar-${itemKey}`}
+                      onClick={() => actualizar(producto.id, paqueteSelected, cantidad + 1)}
                       className="w-8 h-8 rounded-full bg-white/50 border border-white/80 flex items-center justify-center
                                  hover:border-brand-orange hover:text-brand-orange hover:bg-white/80 active:scale-90 transition-all text-brand-brown"
                       aria-label="Sumar uno"
@@ -103,7 +113,7 @@ export default function Carrito() {
                   </div>
 
                   {/* Subtotal */}
-                  <div className="text-right min-w-[80px]">
+                  <div className="text-right min-w-[90px]">
                     <p className="font-black text-brand-brown">
                       C$ <AnimatedPrice value={subtotal} />
                     </p>
@@ -111,8 +121,8 @@ export default function Carrito() {
 
                   {/* Quitar */}
                   <button
-                    id={`btn-quitar-${producto.id}`}
-                    onClick={() => quitar(producto.id)}
+                    id={`btn-quitar-${itemKey}`}
+                    onClick={() => quitar(producto.id, paqueteSelected)}
                     className="text-brand-brown/40 hover:text-red-500 hover:scale-110 active:scale-90 p-1.5 rounded-full hover:bg-red-50 transition-all"
                     aria-label="Quitar producto"
                   >
@@ -144,20 +154,33 @@ export default function Carrito() {
         <div className="glass-card rounded-3xl p-8 border-white/60 shadow-2xl h-fit sticky top-24">
           <h2 className="font-black text-xl text-brand-brown mb-6">Resumen de compra</h2>
           <div className="space-y-4 text-sm font-semibold text-brand-navy/80 mb-6">
-            {items.map(({ producto, cantidad }) => (
-              <div key={producto.id} className="flex justify-between items-center pb-2 border-b border-white/30">
-                <span className="truncate max-w-[150px]">{producto.titulo} <span className="text-xs text-brand-brown/50 font-bold">× {cantidad}</span></span>
-                <span className="font-black text-brand-brown shrink-0">
-                  C$ <AnimatedPrice value={producto.precio * cantidad} />
-                </span>
-              </div>
-            ))}
+            {items.map(({ producto, cantidad, paqueteSelected, precioUnitario }) => {
+              const safePrecio = isNaN(precioUnitario) ? 0 : precioUnitario;
+              const itemKey = `${producto.id}-${paqueteSelected ?? 'unidad'}`;
+              return (
+                <div key={itemKey} className="flex justify-between items-center pb-2 border-b border-white/30">
+                  <div className="truncate max-w-[170px] flex flex-col">
+                    <span className="truncate text-brand-brown font-bold text-sm">
+                      {producto.titulo}
+                    </span>
+                    <span className="text-[10px] text-brand-brown/50 font-semibold leading-none mt-0.5">
+                      {paqueteSelected ? (producto.id === 'cosasdehorno' ? `Bandeja de ${paqueteSelected}` : `Paquete de ${paqueteSelected}`) : 'Unidad'} × {cantidad}
+                    </span>
+                  </div>
+                  <span className="font-black text-brand-brown shrink-0">
+                    C$ <AnimatedPrice value={safePrecio * cantidad} />
+                  </span>
+                </div>
+              );
+            })}
           </div>
           <div className="border-t border-white/40 pt-4 flex justify-between font-black text-lg text-brand-brown mb-8">
             <span>Total</span>
-            <span className="text-brand-orange text-xl">
-              C$ <AnimatedPrice value={totalValue} />
-            </span>
+            <div className="text-right">
+              <span className="text-brand-orange text-xl">
+                C$ <AnimatedPrice value={totalValue} />
+              </span>
+            </div>
           </div>
           <Link to="/forma-pago" id="btn-proceder-pago" className="btn-primary w-full justify-center py-4">
             Proceder al pago

@@ -1,5 +1,9 @@
 // src/pages/Noticias.tsx
+import { useScrollReveal } from '../hooks/useScrollReveal';
+
 export default function Noticias() {
+  const revealRef = useScrollReveal();
+
   const noticiasData = [
     {
       id: 1,
@@ -33,15 +37,15 @@ export default function Noticias() {
   ];
 
   return (
-    <main className="pt-32 pb-20 px-[6%] md:px-[8%] relative z-10">
-     <section className=" min-h-[50px] flex items-center justify-center rounded-3xl mb-8  relative overflow-hidden">
-      <p className="text-brand-brown/70 font-bold text-sm md:text-base">
-            Historias, eventos y momentos especiales
-      </p>
+    <main ref={revealRef} className="pt-32 pb-20 px-[6%] md:px-[8%] relative z-10">
+      <section className="min-h-[50px] flex items-center justify-center rounded-3xl mb-8 relative overflow-hidden reveal">
+        <p className="text-brand-brown/70 font-bold text-sm md:text-base">
+          Historias, eventos y momentos especiales
+        </p>
       </section>
 
       <section className="px-2">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 reveal reveal-delay-1">
           {noticiasData.map(noticia => (
             <div key={noticia.id} className="glass-card rounded-3xl overflow-hidden border-white/60 flex flex-col card-hover">
               <a href={noticia.link || '#'} target="_blank" rel="noreferrer" className="block h-48 overflow-hidden border-b border-white/30">
