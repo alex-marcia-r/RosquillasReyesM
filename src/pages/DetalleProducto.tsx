@@ -152,67 +152,80 @@ export default function DetalleProducto() {
             </div>
           )}
 
-          {/* Cantidad */}
-          <div className="flex items-center gap-4 my-6">
-            <button
-              id="btn-restar-cantidad"
-              onClick={() => setCantidad((c) => Math.max(1, c - 1))}
-              className="w-10 h-10 rounded-full bg-white/50 backdrop-blur-sm border border-white/80 flex items-center justify-center
-                         hover:border-brand-orange hover:text-brand-orange hover:bg-white/80 hover:scale-105 active:scale-95 transition-all text-brand-brown"
-              aria-label="Disminuir cantidad"
-            >
-              <Minus size={16} />
-            </button>
-            <span className="text-2xl font-black w-8 text-center text-brand-brown">{cantidad}</span>
-            <button
-              id="btn-sumar-cantidad"
-              onClick={() => setCantidad((c) => c + 1)}
-              className="w-10 h-10 rounded-full bg-white/50 backdrop-blur-sm border border-white/80 flex items-center justify-center
-                         hover:border-brand-orange hover:text-brand-orange hover:bg-white/80 hover:scale-105 active:scale-95 transition-all text-brand-brown"
-              aria-label="Aumentar cantidad"
-            >
-              <Plus size={16} />
-            </button>
-          </div>
+          {producto.categoria === 'eventos' ? (
+            <div className="mt-8 p-6 bg-brand-orange/10 border border-brand-orange/30 rounded-2xl text-center shadow-inner">
+              <p className="text-brand-brown font-bold text-base">
+                Este producto se realiza exclusivamente bajo encargo para eventos o pedidos especiales.
+              </p>
+              <p className="text-brand-navy/80 font-semibold text-sm mt-2">
+                Por favor, comunícate con nosotros a través de la sección de Contacto para cotizar tu pedido.
+              </p>
+            </div>
+          ) : (
+            <>
+              {/* Cantidad */}
+              <div className="flex items-center gap-4 my-6">
+                <button
+                  id="btn-restar-cantidad"
+                  onClick={() => setCantidad((c) => Math.max(1, c - 1))}
+                  className="w-10 h-10 rounded-full bg-white/50 backdrop-blur-sm border border-white/80 flex items-center justify-center
+                             hover:border-brand-orange hover:text-brand-orange hover:bg-white/80 hover:scale-105 active:scale-95 transition-all text-brand-brown"
+                  aria-label="Disminuir cantidad"
+                >
+                  <Minus size={16} />
+                </button>
+                <span className="text-2xl font-black w-8 text-center text-brand-brown">{cantidad}</span>
+                <button
+                  id="btn-sumar-cantidad"
+                  onClick={() => setCantidad((c) => c + 1)}
+                  className="w-10 h-10 rounded-full bg-white/50 backdrop-blur-sm border border-white/80 flex items-center justify-center
+                             hover:border-brand-orange hover:text-brand-orange hover:bg-white/80 hover:scale-105 active:scale-95 transition-all text-brand-brown"
+                  aria-label="Aumentar cantidad"
+                >
+                  <Plus size={16} />
+                </button>
+              </div>
 
-          {/* Botón + SuccessCheck */}
-          <div className="relative">
-            <button
-              id="btn-agregar-carrito"
-              onClick={handleAgregar}
-              disabled={agregado}
-              className={`btn-primary w-full justify-center text-base py-4 font-bold transition-all duration-300
-                ${agregado ? '!bg-green-600 !shadow-green-600/35 border border-green-600' : ''}`}
-            >
-              {agregado ? (
-                <>
-                  {/* SuccessCheck inline */}
-                  <span
-                    ref={checkRef}
-                    className="t-success-check"
-                    data-state={checkState}
-                    aria-hidden="true"
-                  >
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <path
-                        d="M4 10.5L8.5 15L16 7"
-                        stroke="white"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
-                  ¡Agregado al carrito!
-                </>
-              ) : (
-                <>
-                  <ShoppingCart size={18} />
-                  Agregar al carrito
-                </>
-              )}
-            </button>
-          </div>
+              {/* Botón + SuccessCheck */}
+              <div className="relative">
+                <button
+                  id="btn-agregar-carrito"
+                  onClick={handleAgregar}
+                  disabled={agregado}
+                  className={`btn-primary w-full justify-center text-base py-4 font-bold transition-all duration-300
+                    ${agregado ? '!bg-green-600 !shadow-green-600/35 border border-green-600' : ''}`}
+                >
+                  {agregado ? (
+                    <>
+                      {/* SuccessCheck inline */}
+                      <span
+                        ref={checkRef}
+                        className="t-success-check"
+                        data-state={checkState}
+                        aria-hidden="true"
+                      >
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                          <path
+                            d="M4 10.5L8.5 15L16 7"
+                            stroke="white"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </span>
+                      ¡Agregado al carrito!
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingCart size={18} />
+                      Agregar al carrito
+                    </>
+                  )}
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </main>
